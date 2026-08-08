@@ -1,0 +1,128 @@
+generated: '2026-08-06'
+method: derived
+source: >-
+  Derived from components.schemas in openapi/axlehire-jitsu-rest-api.yml — the
+  $ref links between schemas and the id-reference fields (shipment_id,
+  assignment_id, parcel_id, driver_id, tracking_code, internal_id). Domain
+  vocabulary cross-checked against
+  https://docs.gojitsu.com/#/docs/Glossary.md.
+docs: https://docs.gojitsu.com/#/docs/Glossary.md
+notation: >-
+  relationships use has_one / has_many / belongs_to with the reference field
+  name; direction is from the entity that owns the reference.
+
+entities:
+- name: Shipment
+  key: id (integer)
+  alt_keys: [tracking_code, internal_id]
+  domain: core
+  description: >-
+    A delivery Jitsu makes on behalf of a client to a recipient. The root
+    aggregate — carries customer, both addresses, both time windows, parcels,
+    status, inbound_status, service_level, brand code and the tracking_url.
+- name: Parcel
+  key: id
+  alt_keys: [parcel_id, uid]
+  domain: core
+  description: A physical package within a shipment, with dimensions, weight, category, type and status.
+- name: Customer
+  key: none (embedded value object)
+  domain: core
+  description: The recipient — name, email, phone_number. Embedded in the shipment, not addressable.
+- name: Address
+  key: none (embedded value object)
+  domain: core
+  description: street, street2, city, state, zipcode, plus what3words and geocoded latitude/longitude.
+- name: Assignment
+  key: id (integer)
+  domain: operations
+  description: The set of stops a driver executes to complete a route; covers one or many shipments.
+- name: Driver
+  key: id
+  domain: operations
+  description: first_name, last_name, phone_number, profile_photo. Exposed read-only via the assignment.
+- name: Vehicle
+  key: id
+  domain: operations
+  description: make, model, color, license_plate, license_plate_state.
+- name: TrackingEvent
+  key: none (event stream)
+  domain: tracking
+  description: >-
+    One lifecycle signal for a shipment — signal, ts, geolocation, eta, remark,
+    next_destination, type. Read by tracking_code, not by shipment id.
+- name: DeliveryPod
+  key: none
+  domain: proof
+  description: A proof-of-delivery photo — url, category, capture_ts.
+- name: ShipmentDeliveryInfo
+  key: none
+  domain: proof
+  description: images[] and signatures[] captured at delivery.
+- name: Tip
+  key: id
+  domain: payments
+  description: A driver tip — amount, currency, service_fee, payment_service_id, status, source.
+- name: Price
+  key: none
+  domain: billing
+  description: Delivery fee — unit, base, pre_delivery_adjustment, post_delivery_adjustment.
+- name: Webhook
+  key: none (event envelope)
+  domain: events
+  description: 'Real-time event envelope: {event, ts, geolocation, data}. See asyncapi/axlehire-webhooks.yml.'
+- name: Brand
+  key: code
+  domain: experience
+  description: >-
+    A subset of shipments grouped by an identifying code, carrying its own
+    company name, logo, support email and phone for the tracking page and SMS.
+    Configured in the Client Portal; referenced from the API only as the
+    shipment's `code` field.
+
+relationships:
+- {from: Shipment, to: Parcel, kind: has_many, via: shipment_id}
+- {from: Shipment, to: Customer, kind: has_one, via: customer}
+- {from: Shipment, to: Address, kind: has_one, via: pickup_address}
+- {from: Shipment, to: Address, kind: has_one, via: dropoff_address}
+- {from: Shipment, to: Assignment, kind: belongs_to, via: assignment_id}
+- {from: Shipment, to: TrackingEvent, kind: has_many, via: tracking_code}
+- {from: Shipment, to: DeliveryPod, kind: has_many, via: shipment_id}
+- {from: Shipment, to: Price, kind: has_one, via: fee}
+- {from: Shipment, to: Brand, kind: belongs_to, via: code}
+- {from: Shipment, to: Remark, kind: has_one, via: remark}
+- {from: Assignment, to: Driver, kind: has_one, via: driver}
+- {from: Assignment, to: Vehicle, kind: has_one, via: vehicle}
+- {from: Assignment, to: Shipment, kind: has_many, via: shipment_ids}
+- {from: Parcel, to: Shipment, kind: belongs_to, via: shipment_id}
+- {from: Tip, to: Shipment, kind: belongs_to, via: shipment_id}
+- {from: Tip, to: Assignment, kind: belongs_to, via: assignment_id}
+- {from: Tip, to: Driver, kind: belongs_to, via: driver_id}
+- {from: TrackingEvent, to: Shipment, kind: belongs_to, via: shipment_id}
+- {from: Webhook, to: Shipment, kind: belongs_to, via: data.shipment}
+- {from: Webhook, to: Assignment, kind: belongs_to, via: data.assignment}
+
+interchange_hubs: [Shipment, Assignment]
+
+identifier_notes:
+- >-
+  Shipments have three identifiers with different owners: `id` (Jitsu integer
+  primary key, used in every path), `tracking_code` (Jitsu string, the only key
+  the tracking endpoints accept, auto-generated when not supplied) and
+  `internal_id` (the client's own reference, stored but not operational).
+- >-
+  There is no id-prefix convention — ids are bare integers, so an id alone
+  carries no type information.
+- >-
+  Two parallel status fields: `status` is the delivery lifecycle stage,
+  `inbound_status` is warehouse handoff state. Both must be modelled.
+
+gaps:
+- >-
+  No list/search endpoint for shipments. There is no GET /v3/shipments, so a
+  client cannot enumerate or query its own shipments — every read requires an id
+  the client already holds.
+- >-
+  Brand is a first-class domain concept but has no API representation beyond a
+  string `code`; it can only be created and edited in the Client Portal.
+- No addressable Customer entity — recipients are embedded value objects, so delivery preferences cannot be read back by API.

@@ -1,0 +1,58 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: AxleHire (Jitsu)
+providerId: axlehire
+generated: '2026-08-06'
+method: searched
+created: '2026-08-06'
+modified: '2026-08-06'
+tags:
+- Rate Limiting
+- Logistics
+- Last Mile Delivery
+description: >-
+  Jitsu (formerly AxleHire) publishes one account-wide rate limit for the v3
+  REST API — 10 requests per second with a short burst allowance — enforced
+  identically in staging and production. Exceeding it returns HTTP 429. No
+  rate-limit response headers are published, so a client cannot see its
+  remaining budget; the documented remedy is client-side exponential backoff.
+sources:
+- https://docs.gojitsu.com/#/docs/RetryAndErrors.md
+- https://docs.gojitsu.com/#/docs/FAQs.md
+- https://docs.gojitsu.com/#/docs/Testing.md
+headers:
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  requestId: null
+responseCodes:
+  throttled: 429
+limits:
+- name: All API requests
+  scope: account
+  metric: requests_per_second
+  limit: 10
+  timeFrame: second
+  environments: [production, staging]
+  burst: short burst allowance (magnitude not published)
+policies:
+- name: Exponential backoff
+  description: >-
+    On 429, retry with exponential backoff — 1s, 2s, 4s, 8s, capped at 60s —
+    with ±10–20% random jitter to avoid thundering-herd retries.
+- name: Retry classes
+  description: >-
+    Retry 429, 500, 502 and 503 with backoff. Do not retry 400, 401, 403, 404,
+    405, 406, 412 or 422 — fix the request instead.
+- name: Load testing
+  description: >-
+    Staging enforces the same 10 QPS as production. Higher limits for load
+    testing must be arranged with the Jitsu team in advance.
+gaps:
+- >-
+  No RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset and no Retry-After
+  header on the 429. A client has no way to pace itself and can only react after
+  it has already been throttled.
+- No per-plan or per-endpoint limits published; one flat number for every account.

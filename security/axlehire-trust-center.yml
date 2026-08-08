@@ -1,0 +1,48 @@
+generated: '2026-08-06'
+method: searched
+probe: true
+source: https://trust.gojitsu.com/
+url: https://trust.gojitsu.com/
+description: >-
+  Jitsu (formerly AxleHire) runs a public trust center on SafeBase by Drata at
+  trust.gojitsu.com. It names a single audit certification — SOC 2 Type 2 — and
+  gates the underlying policy documents behind an NDA/request flow typical of
+  SafeBase. Certifications are recorded exactly as published; nothing was
+  inferred.
+platform: SafeBase by Drata
+contact_email: compliance@gojitsu.com
+certifications:
+- name: SOC 2 Type 2
+  status: published
+  evidence: Listed as the compliance certification on trust.gojitsu.com.
+not_published:
+- ISO 27001
+- PCI DSS
+- HIPAA
+- FedRAMP
+ratings:
+- name: BitSight
+  value: 770
+documents:
+- Network Diagram
+- Acceptable Use Policy
+- Access Control Policy
+- Asset Management Policy
+- Backup Policy
+- Business Continuity / Disaster Recovery Policy
+- Change Management Policy
+- Code of Conduct Policy
+- Data Classification Policy
+- Data Protection Policy
+- Data Retention Policy
+- Privacy Policy
+- Subprocessors list
+- Data Subject Requests procedure
+- Responsible Disclosure
+infrastructure: AWS
+x-evidence:
+  fetched: '2026-08-06'
+  url: https://trust.gojitsu.com/
+  http_status: 200
+  content_type: text/html
+  dns: gojitsu.portals.safebase.io

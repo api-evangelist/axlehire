@@ -1,0 +1,140 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://docs.gojitsu.com/#/docs/Webhooks.md and the webhook explorer catalog
+  served by https://docs.gojitsu.com/static/js/docs.js, plus the Webhook /
+  WebhookEventData / MiniShipment schemas in
+  openapi/axlehire-jitsu-rest-api.yml.
+description: >-
+  Jitsu (formerly AxleHire) publishes NO AsyncAPI document — this is the webhook
+  catalog captured verbatim from its documented event surface. 35 documented
+  event entries across 5 categories (33 distinct `event` string values; the
+  three DAS variants all emit `SHIPMENT.NOTIFICATION` and are distinguished by
+  data.event_data.update_status). Each event has a published sample payload in
+  the docs webhook explorer. Nothing here is invented.
+asyncapi_published: false
+spec_hint: >-
+  The Webhook schema IS already modelled in the OpenAPI
+  (components.schemas.Webhook → WebhookEventData → MiniShipment / MiniAssignment
+  / Geolocation), so an AsyncAPI 3.0 document over these 33 events would be
+  largely mechanical for Jitsu to publish.
+
+transport:
+  protocol: HTTPS
+  method: POST
+  content_type: application/json
+  registration: >-
+    Manual. Email the endpoint URL and any auth requirement to the Jitsu team;
+    they register it per account and per environment. There is no self-service
+    subscription API.
+  signing: >-
+    None published. The docs invite integrators to supply "any authentication
+    requirements (token header, HMAC signature, etc.)" for Jitsu to configure —
+    negotiated per account rather than specified.
+  delivery_semantics: at-least-once
+  retries: exponential backoff on any non-2xx response
+  consumer_requirements:
+  - Return 2xx quickly; process asynchronously
+  - Handler must be idempotent — deduplicate on ts + event + shipment.id
+  recovery:
+  - GET /v3/shipments/{shipment_id}
+  - GET /v3/tracking/{tracking_code}/events
+  - Ask Jitsu to review delivery logs for missed events
+
+envelope:
+  event: string — the event type
+  ts: string (ISO-8601 UTC) — when the event occurred
+  geolocation: object — {latitude, longitude, altitude}, present on driver-location events
+  data: object — WebhookEventData, varies by event
+data_fields:
+  reason_code: Reason provided by the driver
+  shipment: MiniShipment — {id, shipment_id, internal_id, tracking_code, assignment_id}
+  assignment: MiniAssignment
+  ts_local: Localized ISO-8601 timestamp with offset
+  eta: Estimated time of arrival, in milliseconds
+  destination: Destination city and state
+  old_data: Previous values of updated fields
+  new_data: New values for updated fields
+  updated_fields: Array of field names that changed
+  source: Event origin (e.g. AP_dataorch, AP_inbound_api)
+  delayed_reason: Delay reason
+
+categories:
+- name: Planning
+  description: Address verification, geocoding and route assignment — fired before or independent of physical delivery.
+  events:
+  - {event: SHIPMENT.GEOCODED, description: Address successfully geolocated.}
+  - {event: SHIPMENT.GEOCODE_FAILED, description: Address could not be geolocated — requires correction before routing.}
+  - {event: DELIVERABLE_ADDRESS.UPDATE, description: Deliverable address updated to a more precise or corrected location.}
+  - {event: SHIPMENT.NOTIFICATION, variant: DAS-Corrected, discriminator: data.event_data.update_status = CORRECTED,
+     description: DAS successfully corrected the address based on verified data.}
+  - {event: SHIPMENT.NOTIFICATION, variant: DAS-Flagged, discriminator: data.event_data.update_status = FLAGGED,
+     description: DAS applied a correction but could not fully confirm the secondary unit — SMS sent to recipient.}
+  - {event: SHIPMENT.NOTIFICATION, variant: DAS-Failed, discriminator: data.event_data.update_status = FAILED,
+     description: DAS could not correct the address — SMS sent to recipient for manual confirmation.}
+  - {event: SHIPMENT.UPDATE_DROPOFF, description: 'Delivery information updated (e.g. instructions, access code, address correction).'}
+  - {event: CUSTOMER_PROFILE.UPDATE, description: Delivery preferences updated for a customer profile — saved for future deliveries.}
+  - {event: ASSIGNMENT.ROUTE_ASSIGNED, description: Shipment assigned to a delivery route.}
+- name: Inbound
+  description: Fired as shipments arrive at the Jitsu warehouse.
+  events:
+  - {event: SHIPMENT.SCAN, description: Shipment scanned at the warehouse.}
+  - {event: SHIPMENT.RECEIVED_OK, description: Shipment received at the warehouse without damage.}
+  - {event: SHIPMENT.RECEIVED_DAMAGED, description: Shipment received at the warehouse with damage.}
+  - {event: SHIPMENT.MISSING, description: Shipment missing at the anticipated injection point after routing completes.}
+  - {event: SHIPMENT.MANIFEST_NOT_RECEIVED, description: Shipment not scanned as received within the configured threshold window.}
+  - {event: SHIPMENT.CANCELLED_BEFORE_PICKUP, description: Shipment cancelled before driver pickup.}
+  - {event: CONTAINER.RECEIVED, description: A container of shipments received at the warehouse.}
+- name: Outbound
+  description: Fired during the pickup and delivery lifecycle.
+  events:
+  - {event: SHIPMENT.PICKUP_EN_ROUTE, description: Driver en route to the pickup location.}
+  - {event: SHIPMENT.PICKUP_READY, description: Driver arrived at pickup location, ready to load.}
+  - {event: SHIPMENT.PICKUP_SUCCEEDED, description: Shipment picked up successfully.}
+  - {event: SHIPMENT.CANCELLED_AFTER_PICKUP, description: Shipment cancelled after pickup but before delivery.}
+  - {event: SHIPMENT.DROPOFF_EN_ROUTE, description: Driver en route to the dropoff location.}
+  - {event: SHIPMENT.DROPOFF_READY, description: Driver arrived at dropoff location, ready to deliver.}
+  - {event: SHIPMENT.DROPOFF_SUCCEEDED, description: Shipment delivered successfully.}
+  - {event: SHIPMENT.DROPOFF_DELAY, description: Delivery delayed en route.}
+  - {event: SHIPMENT.RETURN_EN_ROUTE, description: Driver en route to return an undelivered shipment.}
+  - {event: SHIPMENT.RETURN_READY, description: Driver at return location, ready to unload.}
+  - {event: SHIPMENT.RETURN_SUCCEEDED, description: Undelivered shipment returned successfully.}
+  - {event: SHIPMENT.HANDED-OFF, description: Shipment transferred to another carrier based on client protocol.}
+- name: POD
+  description: Proof-of-delivery photo review. NOT enabled by default — the account must ask Jitsu to turn these on.
+  enabled_by_default: false
+  events:
+  - {event: POD.ACCEPTED, description: 'Delivery photo approved. Payload carries a pods array of pod_id + url.'}
+  - {event: POD.NEED_REVIEW, description: Delivery photo under review.}
+  - {event: POD.REJECTED, description: 'Delivery photo rejected (e.g. reason: PERSON IN PHOTO).'}
+- name: Exceptions
+  description: Fired when a pickup, delivery or return could not be completed.
+  events:
+  - {event: SHIPMENT.PICKUP_FAILED, description: Shipment not picked up on the planned route.}
+  - {event: SHIPMENT.DROPOFF_FAILED, description: Delivery attempt unsuccessful.}
+  - {event: SHIPMENT.RETURN_FAILED, description: Undelivered shipment could not be returned.}
+  - {event: SHIPMENT.DISPOSABLE, description: Shipment marked for disposal after exhausting delivery and return attempts.}
+
+counts:
+  categories: 5
+  documented_entries: 35
+  distinct_event_values: 33
+
+related_operations:
+  poll_status: retrieve_1 (GET /v3/shipments/{shipment_id})
+  poll_events: retrieveEvents (GET /v3/tracking/{tracking_code}/events)
+  proof_of_delivery: getPod (GET /v3/shipments/{shipment_id}/pod)
+
+gaps:
+- >-
+  No AsyncAPI document, even though the Webhook payload is already a named
+  schema in the OpenAPI.
+- >-
+  No published signature scheme. Webhook authentication is negotiated per
+  account, so no integrator can verify authenticity from the docs alone.
+- >-
+  No self-service subscription/registration API — endpoints are registered by
+  emailing the Jitsu team.
+- >-
+  SHIPMENT.NOTIFICATION overloads one event string with three semantically
+  distinct outcomes, discriminated only by a nested field.

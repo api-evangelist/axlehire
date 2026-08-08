@@ -1,0 +1,124 @@
+generated: '2026-08-06'
+method: searched
+source: https://docs.gojitsu.com/#/docs/SDKs.md
+description: >-
+  Jitsu (formerly AxleHire) publishes nine first-party SDKs covering the v3 REST
+  API. They are NOT on any language package registry — each ships as a zip
+  archive downloaded from the docs host and vendored into the consuming project.
+  Every download URL below was fetched and returned HTTP 200 application/zip on
+  2026-08-06; the size observed is recorded. Jitsu's own note: "SDK source is
+  distributed as a zip archive. Future releases will be published to
+  language-native package registries (PyPI, npm, Packagist, RubyGems, etc.)."
+  Registry lookups for jitsu-sdk on npm and PyPI returned 404, confirming this.
+distribution: zip-archive
+registries_checked:
+- registry: npm
+  query: jitsu-sdk / @gojitsu/sdk
+  result: 404 — not published
+- registry: pypi
+  query: jitsu-sdk / axlehire
+  result: 404 — not published
+- registry: github
+  query: github.com/axlehire
+  result: 404 — no public organization
+packages:
+- language: python
+  name: jitsu_sdk
+  client: JitsuClient
+  version: 1.0.0
+  official: true
+  registry: none
+  url: https://docs.gojitsu.com/static/sdks/jitsu-sdk-python-1.0.0.zip
+  docs: https://docs.gojitsu.com/#/docs/SDK-Python.md
+  install: Download the zip, extract, copy jitsu_sdk/ into your project (or pip install -e ./jitsu-sdk-python-1.0.0)
+  requires: Python 3.7+, standard library only
+  http_status: 200
+  bytes: 13316
+- language: javascript
+  name: jitsu-sdk-node
+  client: JitsuClient
+  version: 1.0.0
+  official: true
+  registry: none
+  url: https://docs.gojitsu.com/static/sdks/jitsu-sdk-node-1.0.0.zip
+  docs: https://docs.gojitsu.com/#/docs/SDK-Node.md
+  install: Download the zip, extract, require by relative path — no npm install step
+  requires: Node 14+, CommonJS, built-in https module only
+  http_status: 200
+  bytes: 4868
+- language: typescript
+  name: jitsu-sdk-typescript
+  version: 1.0.0
+  official: true
+  registry: none
+  url: https://docs.gojitsu.com/static/sdks/jitsu-sdk-typescript-1.0.0.zip
+  docs: https://docs.gojitsu.com/#/docs/SDK-TypeScript.md
+  http_status: 200
+  bytes: 5068093
+- language: go
+  name: jitsu
+  version: 1.0.0
+  official: true
+  registry: none
+  url: https://docs.gojitsu.com/static/sdks/jitsu-sdk-go-1.0.0.zip
+  docs: https://docs.gojitsu.com/#/docs/SDK-Go.md
+  install: Extract and vendor the jitsu/ package, or add a local replace directive in go.mod
+  requires: Go 1.19+, standard library only
+  http_status: 200
+  bytes: 5334
+- language: java
+  name: jitsu-sdk-java
+  version: 1.0.0
+  official: true
+  registry: none
+  url: https://docs.gojitsu.com/static/sdks/jitsu-sdk-java-1.0.0.zip
+  docs: https://docs.gojitsu.com/#/docs/SDK-Java.md
+  requires: Java 11+
+  http_status: 200
+  bytes: 7931
+- language: dart
+  name: jitsu-sdk-dart
+  version: 1.0.0
+  official: true
+  registry: none
+  url: https://docs.gojitsu.com/static/sdks/jitsu-sdk-dart-1.0.0.zip
+  docs: https://docs.gojitsu.com/#/docs/SDK-Dart.md
+  http_status: 200
+  bytes: 4645
+- language: ruby
+  name: jitsu-sdk-ruby
+  version: 1.0.0
+  official: true
+  registry: none
+  url: https://docs.gojitsu.com/static/sdks/jitsu-sdk-ruby-1.0.0.zip
+  docs: https://docs.gojitsu.com/#/docs/SDK-Ruby.md
+  http_status: 200
+  bytes: 4404
+- language: php
+  name: jitsu-sdk-php
+  version: 1.0.0
+  official: true
+  registry: none
+  url: https://docs.gojitsu.com/static/sdks/jitsu-sdk-php-1.0.0.zip
+  docs: https://docs.gojitsu.com/#/docs/SDK-PHP.md
+  requires: PHP 7.4+
+  http_status: 200
+  bytes: 4382
+- language: dotnet
+  name: jitsu-sdk-csharp
+  version: 1.0.0
+  official: true
+  registry: none
+  url: https://docs.gojitsu.com/static/sdks/jitsu-sdk-csharp-1.0.0.zip
+  docs: https://docs.gojitsu.com/#/docs/SDK-CSharp.md
+  requires: .NET 6+
+  http_status: 200
+  bytes: 5172
+cli: none
+gaps:
+- >-
+  No registry distribution. Vendoring a zip means no semver resolution, no
+  dependency locking, no transitive security advisories and no automated
+  upgrade path — the single largest integration-friction item in Jitsu's
+  developer surface.
+- No public source repository for any SDK; the zip is the only artifact.

@@ -1,0 +1,106 @@
+generated: '2026-08-06'
+method: searched
+source: https://docs.gojitsu.com/#/docs/Testing.md
+description: >-
+  Jitsu (formerly AxleHire) runs a full staging environment with its own API
+  host, client portal and webhook delivery, plus a staging-only lifecycle
+  SIMULATION API that advances a shipment through every delivery state without
+  waiting for a real driver. This is the strongest part of Jitsu's developer
+  surface: an integrator can exercise the entire CREATED → DELIVERED path,
+  including failure branches, before ever touching production. Credentials are
+  provisioned by the Jitsu team — there is no self-service signup.
+docs:
+- https://docs.gojitsu.com/#/docs/Testing.md
+- https://docs.gojitsu.com/#/docs/QuickStart.md
+
+modes:
+- name: staging
+  base_url: https://api.staging.gojitsu.com
+  portal: https://client.staging.gojitsu.com
+  notes: >-
+    Full-featured: own API token, own webhook registrations, simulation API
+    enabled. Enforces the same 10 QPS rate limit as production.
+- name: production
+  base_url: https://api.gojitsu.com
+  portal: https://client.gojitsu.com
+  notes: >-
+    Provisioned only after the Jitsu team reviews and certifies the integration
+    (endpoints tested, sample label scanned, webhook URL supplied).
+
+credentials:
+  self_service: false
+  how: >-
+    The Jitsu team provisions the staging account; the API token is copied or
+    regenerated from Client Portal → user menu → Settings → API Token. Separate
+    tokens per environment are required. Contact api@gojitsu.com to start.
+  key_prefixes: none published
+  test_values_published: none
+
+simulation:
+  available_in: staging only
+  auth: staging API token in the Authorization header
+  endpoints:
+  - name: Happy path
+    method: POST
+    path: /v3/simulation/happy_path/shipments/{shipment_id}
+    effect: Advances the shipment through every lifecycle stage to a successful dropoff.
+  - name: Sad path
+    method: POST
+    path: /v3/simulation/sad_path/shipments/{shipment_id}
+    effect: Advances through pickup, then fires a failed dropoff event.
+  - name: Advance to signal
+    method: POST
+    path: /v3/simulation/shipments/{shipment_id}/{SHIPMENT_SIGNAL}
+    effect: >-
+      Advances only as far as the named lifecycle signal, so you can pause at a
+      specific state. Valid signals are the statuses in
+      lifecycle/axlehire-lifecycle.yml.
+  parameters:
+  - {name: geolocation.latitude, type: number, required: true, description: Latitude of the simulated event location}
+  - {name: geolocation.longitude, type: number, required: true, description: Longitude of the simulated event location}
+  - {name: event_interval, type: integer, required: false, default: 3000, description: Milliseconds between emitted event signals}
+  note: >-
+    The simulation endpoints are documented in Testing.md but are NOT present in
+    the published OpenAPI (openapi/axlehire-jitsu-rest-api.yml), which covers
+    only the /v3 production surface. Recorded here verbatim from the docs.
+
+webhook_tester:
+  where: The Webhooks explorer in the docs site (docs.gojitsu.com)
+  how: >-
+    Sends a sample event payload from the browser to any endpoint you supply,
+    with an optional auth header. Your endpoint must return 2xx and allow CORS
+    (or sit behind a tunnel such as ngrok).
+
+certification_checklist:
+  submit_shipment:
+  - Shipment appears correctly in the Staging Client Portal
+  - Recipient name, address, phone and email are accurate
+  - tracking_code auto-generates when not supplied
+  - Two-line addresses (street2) handled
+  - Invalid address produces the GEOCODE_FAILED event
+  labels:
+  - Retrieve a label in each format used (ZPL, PNG, PDF)
+  - Print and visually verify legibility
+  - Scan every barcode and QR code
+  - Send a sample label to Jitsu for scanner sign-off
+  tracking:
+  - Retrieve a shipment immediately after creation
+  - Simulate the full lifecycle and handle every status value
+  - Process the tracking event list structure
+  webhooks:
+  - Register the staging endpoint with the Jitsu team
+  - Simulate a lifecycle and confirm payload arrival
+  - Test cancel → CANCELLED_BEFORE_PICKUP / CANCELLED_AFTER_PICKUP
+  - Test mark-shipped → inbound_status SHIPPED
+  - Handle the SHIPMENT.NOTIFICATION DAS address-correction event
+  errors:
+  - Handle 429 with backoff and retry
+  - Handle 4xx validation errors gracefully
+  - Return 2xx from the webhook endpoint within the timeout window
+
+gaps:
+- >-
+  No self-service signup or sandbox key. Every integrator waits on a human at
+  Jitsu for staging credentials, so the documented API cannot be exercised by
+  anyone who is not already a customer.
+- The simulation API is documented but absent from the OpenAPI contract.

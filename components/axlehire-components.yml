@@ -1,0 +1,91 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://docs.gojitsu.com/#/docs/TrackingAndNotifications.md,
+  https://docs.gojitsu.com/#/docs/Brands.md, https://gojitsu.com/technology
+description: >-
+  Jitsu (formerly AxleHire) ships NO embeddable client-side component library —
+  no web components, no element/JS loader, nothing a developer drops into their
+  own page. What it does ship is a set of HOSTED, BRANDABLE end-user surfaces
+  that an integrator links to rather than embeds, plus operator dashboards.
+  Recorded here because they are real prebuilt product surfaces, but the
+  distinction matters: every one of them is a link-out, and every one is
+  configured in the Client Portal rather than through the API.
+embeddable_library: none
+loader_scripts: none
+
+families:
+- name: Recipient experience
+  surfaces:
+  - name: Recipient Tracking Page
+    type: hosted page
+    url_pattern: https://recipient.gojitsu.com/{tracking_code}
+    api_field: tracking_url (returned on the shipment)
+    shows: [current status, estimated delivery window, driver location when en route, delivery event history]
+    brandable: true
+    embeddable: false
+    note: Surface this link in your own confirmation emails, portal or SMS.
+  - name: Manage Delivery
+    type: hosted page
+    reached_via: personalized link sent to the recipient by SMS (short domain gjt.is / j-it.su)
+    capabilities:
+    - Confirm or update the delivery address
+    - Set delivery preferences (leave at door, safe spot)
+    - Respond to DAS address-verification requests
+    brandable: partial
+    embeddable: false
+  - name: SMS notifications
+    type: hosted messaging
+    enabled_by: 'sms_enabled: true on the shipment, with customer.phone set'
+    sent_on: [shipment created, driver en route, driver arriving, delivered, delivery failed, DAS address issue]
+    brandable: true (custom SMS messaging per brand)
+
+- name: Operator surfaces
+  surfaces:
+  - name: Client Portal
+    type: hosted dashboard
+    url: https://client.gojitsu.com/
+    staging: https://client.staging.gojitsu.com/
+    used_for: [API token issue and rotation, brand configuration, shipment monitoring]
+    embeddable: false
+  - name: Shipper Dashboard
+    type: hosted dashboard
+    described_at: https://gojitsu.com/technology
+    used_for: real-time status of every delivery
+    embeddable: false
+  - name: DSP Portal
+    type: hosted dashboard
+    evidence: Listed as a component on https://status.gojitsu.com/
+  - name: Driver App
+    type: mobile application
+    described_at: https://gojitsu.com/technology
+    used_for: [delivery list, routing instructions, SMS with recipient, photographic proof of delivery]
+
+- name: Developer surfaces
+  surfaces:
+  - name: Docs API console
+    type: hosted try-it console
+    url: https://docs.gojitsu.com/
+    detail: >-
+      Swagger UI over the published OpenAPI with an environment toggle
+      (staging/production) and a browser-stored API token, so requests can be
+      fired live from the docs.
+  - name: Webhook Tester
+    type: hosted tool
+    url: https://docs.gojitsu.com/#/docs/Webhooks.md
+    detail: >-
+      Sends a sample event payload from the browser to any endpoint, with an
+      optional auth header. The endpoint must return 2xx and allow CORS.
+
+branding:
+  configured_in: Client Portal → Settings → Brands
+  api_surface: 'the shipment `code` field only'
+  customizable: [company name, logo, support email, support phone number]
+  docs: https://docs.gojitsu.com/#/docs/Brands.md
+
+gaps:
+- >-
+  The tracking page is the most-seen surface Jitsu operates, but there is no
+  embeddable widget — a shipper cannot render live tracking inside its own
+  order page without rebuilding it from the tracking API.
+- Brand configuration is portal-only; there is no brands endpoint to create or read a brand programmatically.

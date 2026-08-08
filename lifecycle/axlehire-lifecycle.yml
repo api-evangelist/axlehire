@@ -1,0 +1,144 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://docs.gojitsu.com/#/docs/Lifecycle.md,
+  https://docs.gojitsu.com/#/docs/QuickStart.md, https://status.gojitsu.com/,
+  and openapi/axlehire-jitsu-rest-api.yml (path prefix + info.version).
+description: >-
+  Two different lifecycles live in this artifact. The API lifecycle — how Jitsu
+  versions, deprecates and reports on its interface — is thin: path versioning
+  at /v3, no deprecation policy, no changelog, no SLA. The SHIPMENT lifecycle —
+  the domain state machine every integrator has to model — is the opposite:
+  fully enumerated, with 9 standard states, 18 exception states and a separate
+  inbound scan status.
+
+api_versioning:
+  scheme: path
+  current: v3
+  path_prefix: /v3
+  spec_version: 3.0.0
+  header: none
+  date_pinning: none
+  docs: https://docs.gojitsu.com/
+  notes: >-
+    The version appears only in the URL. No mechanism exists to pin a client to
+    an older behaviour, and no policy describes how a v4 would be introduced.
+
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  notes: >-
+    No deprecation or sunset policy is published anywhere on gojitsu.com or
+    docs.gojitsu.com, no operation in the OpenAPI carries deprecated: true, and
+    no RFC 8594 Sunset/Deprecation headers are documented. Integrators have no
+    stated notice period. The AxleHire → Jitsu rebrand itself illustrates the
+    cost: axlehire.com no longer resolves in DNS at all, and the old
+    docs.axlehire.com reference — still the top search result for the API — is
+    simply gone, with no redirect to docs.gojitsu.com.
+
+changelog:
+  published: false
+  url: null
+  notes: >-
+    The SDK page tells readers to "watch the Jitsu changelog for announcements",
+    but no changelog page exists on gojitsu.com or docs.gojitsu.com. The only
+    dated public record of change is the status page incident history.
+
+status_page:
+  url: https://status.gojitsu.com/
+  platform: Atlassian Statuspage
+  api: https://status.gojitsu.com/api/v2/summary.json
+  http_status: 200
+  components:
+  - Public API
+  - Recipient Tracking Page
+  - Driver App
+  - Client Portal
+  - DSP Portal
+  - OAuth Service
+  - OAuth2 Service
+  - Warehouses
+
+sla:
+  url: null
+  public_uptime_target: null
+  operational_claim: 99%+ on-time delivery rate (marketing claim on gojitsu.com/technology, not an API SLA)
+  notes: No numeric API availability SLA is published.
+
+support:
+  api: api@gojitsu.com
+  general: support@gojitsu.com
+  compliance: compliance@gojitsu.com
+  page: https://gojitsu.com/support
+
+shipment_lifecycle:
+  pickup_flow: [CREATED, GEOCODED, ASSIGNED, PICKUP_EN_ROUTE, PICKUP_READY, PICKUP_SUCCEEDED]
+  delivery_flow: [ASSIGNED, DROPOFF_EN_ROUTE, DROPOFF_READY, DROPOFF_SUCCEEDED]
+  standard_statuses:
+  - {status: CREATED, description: Shipment submission acknowledged.}
+  - {status: GEOCODED, description: Pickup and dropoff addresses successfully geocoded.}
+  - {status: ASSIGNED, description: Shipment assigned to a driver.}
+  - {status: PICKUP_EN_ROUTE, description: Driver heading to the pickup location.}
+  - {status: PICKUP_READY, description: Driver arrived at pickup, ready to load.}
+  - {status: PICKUP_SUCCEEDED, description: Pickup completed successfully.}
+  - {status: DROPOFF_EN_ROUTE, description: Driver heading to the dropoff location.}
+  - {status: DROPOFF_READY, description: Driver at dropoff, ready to unload.}
+  - {status: DROPOFF_SUCCEEDED, description: Delivered successfully.}
+  exception_statuses:
+  - {status: GEOCODE_FAILED, description: Address could not be geocoded; requires correction before routing.}
+  - {status: UNSERVICEABLE, description: Destination is outside Jitsu's delivery coverage area.}
+  - {status: CANCELLED_BEFORE_PICKUP, description: Cancelled before driver pickup.}
+  - {status: PICKUP_DELAY, description: Driver reports a delay en route to pickup.}
+  - {status: PICKUP_FAILED, description: Driver was unable to pick up the shipment.}
+  - {status: CANCELLED_AFTER_PICKUP, description: Cancelled after pickup but before delivery.}
+  - {status: DROPOFF_DELAY, description: Driver reports a delay en route to delivery.}
+  - {status: DROPOFF_FAILED, description: Driver was unable to deliver the shipment.}
+  - {status: RETURN_EN_ROUTE, description: Driver returning an undelivered shipment to a Jitsu facility.}
+  - {status: RETURN_READY, description: Driver at return location, ready to unload.}
+  - {status: RETURN_FAILED, description: Return to the Jitsu facility failed.}
+  - {status: RETURN_SUCCEEDED, description: Return to the Jitsu facility completed.}
+  - {status: RETURN_DAMAGED, description: Shipment returned damaged.}
+  - {status: RETURNED_TO_CLIENT_PENDING, description: Scheduled for return to sender.}
+  - {status: RETURNED_TO_CLIENT_SUCCEEDED, description: Return to sender completed.}
+  - {status: HANDED_OFF, description: Transferred to another carrier.}
+  - {status: DAMAGED, description: Marked as damaged.}
+  - {status: DISPOSABLE, description: Marked for disposal after exhausting delivery and return attempts.}
+  inbound_scan_status:
+    description: A secondary status tracking movement inside the Jitsu warehouse network, maintained separately from the primary shipment status.
+    values:
+    - {status: RECEIVED_OK, description: Received at the facility, ready for delivery.}
+    - {status: RECEIVED_DAMAGED, description: Received at the facility with damage.}
+    - {status: MISSING, description: Not received at the expected facility.}
+    - {status: SHIPPED, description: Set after POST /v3/shipments/mark-shipped — the client has physically handed the shipment off.}
+
+integration_tiers:
+  minimal: [POST /v3/shipments]
+  standard:
+  - GET /v3/shipments/{shipment_id}/label
+  - GET /v3/shipments/{shipment_id}
+  - GET /v3/tracking/{tracking_code}/events
+  - POST /v3/shipments/{shipment_id}/cancel
+  advanced:
+  - Webhooks
+  - POST /v3/shipments/mark-shipped
+
+go_live:
+  gated: true
+  process: >-
+    Production credentials are issued only after Jitsu reviews the integration:
+    a list of endpoints integrated and scenarios tested, a sample label printed
+    from staging (for scanner sign-off), and the production webhook URL. Jitsu
+    then certifies the integration and provisions production credentials,
+    followed by a coordinated live "empty box" test shipment.
+
+gaps:
+- No deprecation or sunset policy, and no RFC 8594 headers.
+- No changelog, despite the docs referring readers to one.
+- No published API SLA or uptime target.
+- >-
+  The AxleHire → Jitsu rename dropped the axlehire.com domain entirely (no DNS),
+  breaking every historical link to docs.axlehire.com without a redirect.

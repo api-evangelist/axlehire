@@ -1,0 +1,33 @@
+generated: '2026-08-06'
+method: generated
+source: >-
+  Packaged Agent Skills generated from openapi/axlehire-jitsu-rest-api.yml. Every
+  operationId below was verified verbatim in that file (grep-confirmed);
+  cross-cutting rules cite ../conventions/, ../errors/, ../lifecycle/,
+  ../authentication/, ../rate-limits/, ../sandbox/ and ../asyncapi/. Jitsu
+  publishes no AGENTS.md or first-party skills — these are ours.
+provider: AxleHire (Jitsu)
+api: openapi/axlehire-jitsu-rest-api.yml
+base_url: https://api.gojitsu.com
+staging_base_url: https://api.staging.gojitsu.com
+skills:
+- file: axlehire-submit-shipment.md
+  name: Submit a shipment for last-mile delivery
+  api: openapi/axlehire-jitsu-rest-api.yml
+  operations: [create, retrieve_1]
+- file: axlehire-print-shipping-label.md
+  name: Retrieve and print a shipping label
+  api: openapi/axlehire-jitsu-rest-api.yml
+  operations: [create, label, labelParcel]
+- file: axlehire-track-delivery.md
+  name: Track a delivery end to end
+  api: openapi/axlehire-jitsu-rest-api.yml
+  operations: [retrieve_1, retrieveEvents, retrieveHistory_1, getPod]
+- file: axlehire-cancel-or-reschedule.md
+  name: Cancel or reschedule a shipment
+  api: openapi/axlehire-jitsu-rest-api.yml
+  operations: [retrieve_1, cancelShipment, updateShipmentTimeWindow, updateDropoffAddress]
+- file: axlehire-rate-and-handoff.md
+  name: Rate a delivery and mark it shipped
+  api: openapi/axlehire-jitsu-rest-api.yml
+  operations: [getEstimatedFee, markAsShipped, markAsShippedBulk, getShipmentDeliveryFee]

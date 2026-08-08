@@ -1,0 +1,16 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/axlehire-jitsu-rest-api.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: Authorization
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: '**Authorization header for all calls in format: ''Authorization : Token {YOUR_TOKEN}''**'
+  sources:
+  - openapi/axlehire-jitsu-rest-api.yml

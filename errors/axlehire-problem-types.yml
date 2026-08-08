@@ -1,0 +1,127 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://docs.gojitsu.com/#/docs/Errors.md and
+  https://docs.gojitsu.com/#/docs/RetryAndErrors.md; cross-checked against
+  openapi/axlehire-jitsu-rest-api.yml.
+description: >-
+  The Jitsu (formerly AxleHire) v3 error surface. Jitsu publishes a status-code
+  reference in its docs but declares NO 4xx/5xx responses in its OpenAPI — every
+  operation declares only a 2XX and a `default`, so an error catalog cannot be
+  derived from the contract and had to be read from the docs. The envelope is a
+  single free-text `message` field; there is no error code, type or field-level
+  errors[] array, so HTTP status is the only machine-actionable signal.
+format: proprietary
+rfc9457: false
+media_type: application/json
+envelope:
+  message: Human-readable description of the failure
+example: |-
+  {
+    "message": "tracking_code is required"
+  }
+spec_coverage:
+  operations_total: 34
+  operations_declaring_4xx: 0
+  operations_declaring_5xx: 0
+  note: >-
+    Responses in openapi/axlehire-jitsu-rest-api.yml are keyed only as '2XX'
+    (33), '200' (1) and 'default' (34). A generated client therefore has no
+    typed error model.
+
+problem_types:
+- status: 400
+  title: Bad Request
+  meaning: One or more request fields are invalid.
+  retry: false
+  remediation: Read the `message` field — it usually names the failing field or constraint. Fix the payload.
+- status: 401
+  title: Unauthorized
+  meaning: The API token is missing or incorrect.
+  retry: false
+  remediation: 'Send Authorization: Token <YOUR_API_TOKEN>. Regenerate the token in the Client Portal if it was revoked.'
+- status: 403
+  title: Forbidden
+  meaning: The account does not have permission for this action.
+  retry: false
+  remediation: Contact api@gojitsu.com — token scope is account-level and cannot be widened client-side.
+- status: 404
+  title: Not Found
+  meaning: The requested resource does not exist.
+  retry: false
+  remediation: Verify the shipment_id / tracking_code, and that it belongs to the authenticated account and environment.
+- status: 405
+  title: Method Not Allowed
+  meaning: The HTTP method is not supported for this endpoint.
+  retry: false
+- status: 406
+  title: Not Acceptable
+  meaning: The payload contains unacceptable data.
+  retry: false
+  remediation: See the response `message`.
+- status: 412
+  title: Precondition Failed
+  meaning: The payload contains invalid data.
+  retry: false
+  remediation: See the response `message`.
+- status: 417
+  title: Expectation Failed
+  meaning: Request payload problem.
+  retry: false
+  remediation: Check the request payload.
+- status: 422
+  title: Unprocessable Entity
+  meaning: Request payload problem.
+  retry: false
+  remediation: Check the request payload.
+- status: 429
+  title: Too Many Requests
+  meaning: Rate limit exceeded (10 QPS account-wide).
+  retry: true
+  remediation: Back off exponentially (1s, 2s, 4s, 8s … cap 60s) with jitter. See rate-limits/axlehire-rate-limits.yml.
+- status: 500
+  title: Internal Server Error
+  meaning: Server-side failure at Jitsu.
+  retry: true
+  remediation: Retry with exponential backoff.
+- status: 502
+  title: Bad Gateway
+  meaning: Jitsu is temporarily offline for maintenance.
+  retry: true
+  remediation: Retry with exponential backoff; check https://status.gojitsu.com/.
+- status: 503
+  title: Service Unavailable
+  meaning: Jitsu is temporarily offline for maintenance.
+  retry: true
+  remediation: Retry with exponential backoff; check https://status.gojitsu.com/.
+
+operational_failure_states:
+  note: >-
+    Not HTTP errors — these are shipment-level failure statuses delivered by
+    webhook and by GET /v3/shipments/{shipment_id}. The full list lives in
+    lifecycle/axlehire-lifecycle.yml.
+  states:
+  - {status: GEOCODE_FAILED, meaning: Address could not be geocoded; requires correction before routing.}
+  - {status: UNSERVICEABLE, meaning: Destination is outside Jitsu's delivery coverage area.}
+  - {status: PICKUP_FAILED, meaning: Driver was unable to pick up the shipment.}
+  - {status: DROPOFF_FAILED, meaning: Delivery attempt unsuccessful.}
+  - {status: RETURN_FAILED, meaning: Undelivered shipment could not be returned to the facility.}
+  - {status: RETURN_DAMAGED, meaning: Shipment returned damaged.}
+  - {status: DAMAGED, meaning: Shipment marked as damaged.}
+  - {status: DISPOSABLE, meaning: Marked for disposal after exhausting delivery and return attempts.}
+  - {status: MISSING, meaning: Not received at the expected facility (inbound scan status).}
+  - {status: RECEIVED_DAMAGED, meaning: Received at the facility with damage (inbound scan status).}
+
+logging_guidance:
+  required_fields: [http_status, request_url, request_method, request_body (PII redacted), response_message, timestamp]
+  source: https://docs.gojitsu.com/#/docs/RetryAndErrors.md
+
+gaps:
+- >-
+  No error code or type. Two different 400s are indistinguishable to a client
+  without string-matching English prose, which breaks the moment the wording
+  changes.
+- >-
+  No 4xx/5xx responses in the OpenAPI, so every generated SDK and every agent
+  reading the contract sees an API that cannot fail.
+- No RFC 9457 application/problem+json representation.

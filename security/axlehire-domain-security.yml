@@ -1,0 +1,33 @@
+generated: '2026-08-06'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: gojitsu.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 16 00:45:07 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: docs.gojitsu.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 24 15:38:57 2026 GMT
+  hsts: true
+  hsts_max_age: 31556926
+- host: api.gojitsu.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 18 01:54:41 2026 GMT
+  hsts: null
+domains:
+- domain: gojitsu.com
+  dnssec: true
+  caa:
+  - 0 issue "amazon.com"
+  - 0 issue "letsencrypt.org"
+  - 0 issue "sectigo.com"
+  - 0 issue "pki.goog"
+  - 0 issue "digicert.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

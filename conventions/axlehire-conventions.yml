@@ -1,0 +1,160 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://docs.gojitsu.com/#/docs/Authentication.md,
+  https://docs.gojitsu.com/#/docs/RetryAndErrors.md,
+  https://docs.gojitsu.com/#/docs/Errors.md,
+  https://docs.gojitsu.com/#/docs/Testing.md, plus derivation from
+  openapi/axlehire-jitsu-rest-api.yml (securitySchemes, paths, parameters).
+description: >-
+  Cross-cutting request/response semantics of the Jitsu (formerly AxleHire) v3
+  REST API — the runtime behaviour that applies to every operation and that the
+  OpenAPI does not express. Recorded as published; where Jitsu ships nothing,
+  the field says so rather than being omitted.
+
+base_url: https://api.gojitsu.com
+staging_base_url: https://api.staging.gojitsu.com
+api_style: REST over HTTPS, JSON request and response bodies
+
+authentication:
+  scheme: Opaque API token in the Authorization header
+  header_format: 'Authorization: Token <YOUR_API_TOKEN>'
+  scopes: none — a token carries full account permissions
+  key_rotation: Revoke and regenerate from Client Portal → Settings
+  environments: Separate tokens for staging and production
+  docs: https://docs.gojitsu.com/#/docs/Authentication.md
+  detail: authentication/axlehire-authentication.yml
+
+idempotency:
+  supported: false
+  mechanism: none
+  detail: >-
+    Jitsu documents an "Idempotency" section but ships NO idempotency key. There
+    is no Idempotency-Key header, no replay store, and no server-side dedupe.
+    The published guidance is a client-side workaround: send a stable
+    internal_id or tracking_code on POST /v3/shipments, and look the shipment up
+    with GET /v3/shipments/{shipment_id} (or by internal_id) BEFORE retrying a
+    request that timed out. A retried POST after a timeout can therefore create
+    a duplicate shipment — a real-money failure mode in a delivery API.
+  client_guidance:
+  - Use a consistent internal_id or tracking_code per shipment
+  - Check for an existing shipment before retrying a failed creation
+  - Connection timeout 5–10s; read timeout 30s (longer for label generation)
+  docs: https://docs.gojitsu.com/#/docs/RetryAndErrors.md
+  gap: >-
+    Adding an Idempotency-Key request header with a 24h replay window on
+    POST /v3/shipments would remove the documented duplicate-shipment risk
+    entirely.
+
+pagination:
+  supported: false
+  detail: >-
+    No list endpoint in the published contract is paginated. The only
+    collection-shaped responses are GET /v3/shipments/{shipment_id}/parcels,
+    GET /v3/tracking/{tracking_code}/events and
+    GET /v3/assignments/{assignment_id}/shipments, all of which return a bare
+    array scoped to one parent resource. There are no limit/offset/cursor
+    parameters anywhere in the spec.
+
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+
+metadata:
+  supported: true
+  mechanism: >-
+    `extra` — a free-form object on the shipment body (e.g. containerId,
+    additionalReferenceField), plus `tags[]` (free-form string labels such as
+    "meal kit", "vip", "fragile", "perishable") and `internal_id` for the
+    caller's own identifier.
+  note: internal_id is stored for reference but is not used operationally by Jitsu.
+
+request_tracing:
+  request_id_header: none published
+  detail: >-
+    Jitsu publishes no request-id or correlation header. Its own error-logging
+    guidance asks integrators to log the status, URL, method, request body,
+    response `message` and a timestamp — i.e. to reconstruct correlation
+    client-side. Support escalation is by email to api@gojitsu.com with the full
+    request and response.
+  gap: A per-response request id would make support round-trips one message instead of three.
+
+versioning:
+  scheme: path
+  current: v3
+  path_prefix: /v3
+  spec_version: 3.0.0 (info.version in the published OpenAPI)
+  header: none
+  detail: >-
+    The API is versioned in the URL path only. There is no version request
+    header, no date-based pinning and no published policy for how a v4 would be
+    introduced or how long v3 would be supported.
+  detail_artifact: lifecycle/axlehire-lifecycle.yml
+
+error_envelope:
+  format: proprietary
+  media_type: application/json
+  shape: '{"message": "tracking_code is required"}'
+  rfc9457: false
+  fields:
+    message: Human-readable description; for validation errors it usually names the failing field
+  no_machine_code: >-
+    There is no error `code`, `type` or `errors[]` array — the only
+    machine-actionable signal is the HTTP status. Clients must string-match the
+    message to distinguish one 400 from another.
+  detail: errors/axlehire-problem-types.yml
+
+rate_limit_signaling:
+  limit: 10 requests per second, with a short burst allowance
+  scope: account (same limit in staging and production)
+  throttle_status: 429
+  headers: none published
+  retry_after: not documented
+  backoff: >-
+    Documented exponential backoff — 1s, 2s, 4s, 8s, capped at 60s, with ±10–20%
+    jitter to avoid thundering herds.
+  detail: rate-limits/axlehire-rate-limits.yml
+  gap: >-
+    No RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset (RFC 9218-style)
+    or Retry-After headers, so a client cannot pace itself — it can only react
+    after being throttled.
+
+retry_policy:
+  do_not_retry: [400, 401, 403, 404, 405, 406, 412, 422]
+  retry_with_backoff: [429, 500, 502, 503]
+  docs: https://docs.gojitsu.com/#/docs/RetryAndErrors.md
+
+webhooks:
+  transport: HTTP POST of a JSON body to a registered endpoint
+  registration: Manual — email the endpoint URL (and any auth requirement) to the Jitsu team
+  signing: >-
+    No signature scheme is published. The docs instead invite integrators to
+    supply "any authentication requirements (token header, HMAC signature,
+    etc.)" for Jitsu to configure per account — i.e. it is negotiated, not
+    specified.
+  envelope: {event: string, ts: ISO-8601, geolocation: object, data: object}
+  delivery: At-least-once; retried with exponential backoff on non-2xx
+  consumer_requirements:
+  - Return 2xx quickly; process asynchronously
+  - Handler must be idempotent — the same event may arrive more than once
+  - Deduplicate on ts + event + shipment.id
+  recovery: >-
+    Poll GET /v3/shipments/{shipment_id} or GET /v3/tracking/{tracking_code}/events;
+    contact Jitsu to review delivery logs for missed events.
+  catalog: asyncapi/axlehire-webhooks.yml
+
+time_and_units:
+  timestamps: ISO-8601, UTC (dropoff_earliest_ts / dropoff_latest_ts)
+  localized_timestamps: webhook payloads also carry ts_local with an offset
+  eta: milliseconds (integer)
+  dimensions: 'unit-tagged object: {unit: in, width, length, height}'
+  weight: 'unit-tagged object: {unit: lb, value}'
+
+cross_references:
+  authentication: authentication/axlehire-authentication.yml
+  errors: errors/axlehire-problem-types.yml
+  lifecycle: lifecycle/axlehire-lifecycle.yml
+  rate_limits: rate-limits/axlehire-rate-limits.yml
+  sandbox: sandbox/axlehire-sandbox.yml
+  webhooks: asyncapi/axlehire-webhooks.yml

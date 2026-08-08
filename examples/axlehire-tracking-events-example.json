@@ -1,0 +1,96 @@
+{
+  "operationId": "retrieveEvents",
+  "summary": "Track Shipment",
+  "method": "GET",
+  "path": "/v3/tracking/{tracking_code}/events",
+  "response": {
+    "status": "default",
+    "body": [
+      {
+        "shipment_id": 1234,
+        "ts": "2019-03-27T22:15:19.000Z",
+        "geolocation": {
+          "latitude": 30.39480879213078,
+          "longitude": -87.26686378082174
+        },
+        "signal": "DROPOFF_FAILED",
+        "next_destination": "DROP_OFF",
+        "remark": "Too far away"
+      },
+      {
+        "shipment_id": 1234,
+        "ts": "2019-03-27T22:10:56.000Z",
+        "geolocation": {
+          "latitude": 30.394913617408267,
+          "longitude": -87.26681762984384
+        },
+        "signal": "DROPOFF_READY",
+        "eta": 1000,
+        "next_destination": "DROP_OFF"
+      },
+      {
+        "shipment_id": 1234,
+        "ts": "2019-03-27T22:05:16.000Z",
+        "geolocation": {
+          "latitude": 30.396216413495207,
+          "longitude": -87.28009472505788
+        },
+        "signal": "DROPOFF_EN_ROUTE",
+        "eta": 314000,
+        "next_destination": "DROP_OFF"
+      },
+      {
+        "shipment_id": 1234,
+        "ts": "2019-03-27T22:05:08.000Z",
+        "geolocation": {
+          "latitude": 30.396222403166874,
+          "longitude": -87.28008684726137
+        },
+        "signal": "PICKUP_SUCCEEDED",
+        "eta": 314000,
+        "next_destination": "PICK_UP"
+      },
+      {
+        "shipment_id": 1234,
+        "ts": "2019-03-27T22:04:48.000Z",
+        "geolocation": {
+          "latitude": 30.396216545549482,
+          "longitude": -87.28009610748641
+        },
+        "signal": "PICKUP_READY",
+        "eta": 10000,
+        "next_destination": "PICK_UP"
+      },
+      {
+        "shipment_id": 1234,
+        "ts": "2019-03-27T21:49:28.000Z",
+        "geolocation": {
+          "latitude": 30.41565254029608,
+          "longitude": -87.2429396669947
+        },
+        "signal": "PICKUP_EN_ROUTE",
+        "eta": 518000,
+        "next_destination": "PICK_UP"
+      },
+      {
+        "shipment_id": 1234,
+        "ts": "2019-03-27T21:49:28.000Z",
+        "geolocation": {
+          "latitude": 30.4156494140625,
+          "longitude": -87.2429396669947
+        },
+        "signal": "PICKUP_EN_ROUTE",
+        "eta": 518000,
+        "next_destination": "PICK_UP"
+      },
+      {
+        "shipment_id": 1234,
+        "ts": "2019-03-27T21:25:00.294Z",
+        "signal": "ASSIGNED"
+      }
+    ]
+  },
+  "x-source": "openapi/axlehire-jitsu-rest-api.yml (in-spec example, verbatim)",
+  "x-generated": "2026-08-06",
+  "x-method": "derived"
+}

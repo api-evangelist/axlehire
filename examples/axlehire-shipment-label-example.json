@@ -1,0 +1,16 @@
+{
+  "operationId": "label",
+  "summary": "Retrieve Shipment Label",
+  "method": "GET",
+  "path": "/v3/shipments/{shipment_id}/label",
+  "response": {
+    "status": "default",
+    "body": {
+      "label": "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9UeXBlL1hPYmplY3QvU3VidHlwZS9JbWFnZS9XaWR0aCAyMDAvSGVpZ2h0IDIwMC9MZW5ndGggMjQ4L0NvbG9y...[TRUNCATED by API Evangelist: the published in-spec example carries an 18324-character base64 PDF; only the first 120 characters are retained]"
+    }
+  },
+  "x-source": "openapi/axlehire-jitsu-rest-api.yml (in-spec example, verbatim)",
+  "x-generated": "2026-08-06",
+  "x-method": "derived",
+  "x-note": "The `label` field in the response is base64-encoded label data (PDF by default; PNG and ZPL available via ?format=). Truncated here \u2014 see x-source for the full in-spec example."
+}

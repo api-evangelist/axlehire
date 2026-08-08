@@ -1,0 +1,115 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  Derived from openapi/axlehire-jitsu-rest-api.yml (securitySchemes, responses,
+  parameters) and read from https://docs.gojitsu.com/ (Authentication, Errors,
+  RetryAndErrors, Webhooks) plus https://trust.gojitsu.com/ and
+  https://gojitsu.com/security. Every entry records what was actually observed;
+  `conforms: false` with evidence is a finding, not a blank.
+standards:
+- id: openapi
+  conforms: true
+  version: 3.0.1
+  evidence: >-
+    A real OpenAPI 3.0.1 document (134KB, 34 operations, 31 component schemas,
+    33 in-spec examples) is served at
+    https://docs.gojitsu.com/Jitsu_Export/openapi.yaml. Note it is NOT at the
+    docs root — /openapi.yaml returns the SPA shell; the contract lives under
+    /Jitsu_Export/.
+- id: api-key-auth
+  conforms: true
+  evidence: 'securitySchemes.Authorization — apiKey in header, format: "Authorization: Token {TOKEN}". Applied globally via root security.'
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme in the contract and no OAuth documentation for the
+    public API. The status page does list "OAuth Service" and "OAuth2 Service"
+    components, so OAuth exists somewhere in the platform — but not on the
+    documented shipper API surface.
+- id: oidc
+  conforms: false
+  evidence: No /.well-known/openid-configuration on any Jitsu host (all 404 or SPA shell).
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors use a proprietary {"message": "..."} envelope, not application/problem+json.'
+- id: http-status-semantics
+  conforms: true
+  evidence: >-
+    A documented status-code reference covering 400/401/403/404/405/406/412/417/
+    422/429/500/502/503 with correct semantics and retry classification
+    (docs.gojitsu.com Errors.md, RetryAndErrors.md).
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header and no server-side replay store. The docs
+    "Idempotency" section describes a client-side lookup-before-retry
+    workaround using internal_id / tracking_code.
+- id: pagination
+  conforms: false
+  evidence: >-
+    No limit/offset/cursor parameter anywhere in the spec; collection responses
+    are bare arrays scoped to a single parent resource.
+- id: rate-limit-headers
+  conforms: false
+  evidence: >-
+    A 10 QPS limit is documented and 429 is returned, but no RateLimit-* or
+    Retry-After response headers are published.
+- id: rfc8594-sunset
+  conforms: false
+  evidence: No Sunset/Deprecation headers and no deprecation policy published.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: >-
+    No /.well-known/security.txt on gojitsu.com, api.gojitsu.com or
+    api.staging.gojitsu.com (404); docs/client/track/recipient hosts answer 200
+    with an SPA shell for every path, which is not a document.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: No /.well-known/api-catalog on any host.
+- id: webhook-signing
+  conforms: false
+  evidence: >-
+    No signature scheme published. Webhook authentication is negotiated per
+    account ("token header, HMAC signature, etc.").
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    33 webhook event types are documented with sample payloads, and the Webhook
+    envelope is already a named OpenAPI schema, but no AsyncAPI document is
+    published.
+- id: mcp
+  conforms: false
+  evidence: No MCP server found on any Jitsu host or in any public registry.
+- id: a2a
+  conforms: false
+  evidence: >-
+    No agent card at /.well-known/agent-card.json or /.well-known/agent.json on
+    any of the seven probed hosts.
+- id: soc2
+  conforms: true
+  evidence: >-
+    SOC 2 Type 2 named on the public trust center at https://trust.gojitsu.com/
+    (SafeBase by Drata). See security/axlehire-trust-center.yml.
+- id: responsible-disclosure
+  conforms: true
+  evidence: >-
+    Published responsible-disclosure program at https://gojitsu.com/security
+    with an intake form and support@gojitsu.com. No bug bounty.
+- id: dnssec
+  conforms: true
+  evidence: DNSKEY present for gojitsu.com. See security/axlehire-domain-security.yml.
+- id: dmarc
+  conforms: true
+  evidence: DMARC published with p=reject on gojitsu.com.
+- id: hsts
+  conforms: partial
+  evidence: >-
+    HSTS present on gojitsu.com (max-age 31536000) and docs.gojitsu.com
+    (31556926), but ABSENT on the API host api.gojitsu.com.
+- id: tls13
+  conforms: true
+  evidence: TLSv1.3 negotiated on gojitsu.com, docs.gojitsu.com and api.gojitsu.com.
+compliance_published:
+  certifications: [SOC 2 Type 2]
+  trust_center: https://trust.gojitsu.com/
+  source: security/axlehire-trust-center.yml

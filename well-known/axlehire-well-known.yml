@@ -1,0 +1,87 @@
+generated: '2026-08-06'
+method: probed
+source: live probes of every apis.yml host and every OpenAPI servers[] host
+description: >-
+  Result of probing the /.well-known/ discovery surface across every Jitsu
+  (formerly AxleHire) host. NOTHING was found. The API hosts return a JSON 404
+  for every path. The docs, client-portal, tracking and recipient hosts are
+  single-page apps whose catch-all answers HTTP 200 with the same HTML shell for
+  every /.well-known/* path — a soft-404, not a document — so none of those 200s
+  were saved and none is counted as a hit. No raw files were written and no
+  WellKnown pointer is wired into apis.yml, because Jitsu publishes no
+  well-known documents.
+found: 0
+hosts:
+- host: https://api.gojitsu.com
+  catch_all: json-404
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://api.staging.gojitsu.com
+  catch_all: json-404
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://gojitsu.com
+  catch_all: html-404
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://docs.gojitsu.com
+  catch_all: >-
+    spa-200 — Firebase Hosting rewrite serves the 11773-byte docs index.html
+    (text/html) for EVERY unmatched path, including all /.well-known/* paths.
+    Treated as not-found.
+  documents:
+  - {path: /.well-known/security.txt, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/agent-card.json, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/agent.json, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/openid-configuration, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/oauth-authorization-server, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/api-catalog, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/ai-plugin.json, status: 200, body: html-shell, real: false}
+  - {path: /llms.txt, status: 200, body: html-shell, real: false}
+- host: https://client.gojitsu.com
+  catch_all: spa-200 (3189-byte HTML shell on every path)
+  documents:
+  - {path: /.well-known/security.txt, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/agent-card.json, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/agent.json, status: 200, body: html-shell, real: false}
+- host: https://track.gojitsu.com
+  catch_all: spa-200 (2076-byte HTML shell on every path)
+  documents:
+  - {path: /.well-known/security.txt, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/agent-card.json, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/agent.json, status: 200, body: html-shell, real: false}
+- host: https://recipient.gojitsu.com
+  catch_all: spa-200 (2076-byte HTML shell on every path)
+  documents:
+  - {path: /.well-known/security.txt, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/agent-card.json, status: 200, body: html-shell, real: false}
+  - {path: /.well-known/agent.json, status: 200, body: html-shell, real: false}
+gaps:
+- >-
+  No RFC 9116 /.well-known/security.txt anywhere, even though Jitsu runs a
+  responsible-disclosure program at https://gojitsu.com/security. Publishing a
+  security.txt pointing at that page is a one-file fix.
+- No /.well-known/api-catalog (RFC 9727) linking the published OpenAPI.
+- No A2A agent card at either the 0.3+ or the legacy path.
