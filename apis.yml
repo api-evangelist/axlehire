@@ -1,23 +1,143 @@
 aid: axlehire
-name: AxleHire
-description: 'AxleHire is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+name: AxleHire (Jitsu)
+description: >-
+  AxleHire is a US last-mile delivery carrier founded in 2015 that rebranded as
+  Jitsu in April 2024 and now operates at gojitsu.com. It runs an asset-light,
+  gig-driver network with a proprietary routing and tracking platform serving
+  e-commerce, meal-kit and subscription-box shippers across 23 of the 25 largest
+  US metros, seven days a week. The Jitsu REST API (v3) lets shippers submit
+  shipments, retrieve ZPL/PNG/PDF labels, manage parcels, cancel and re-window
+  deliveries, pull rating estimates and proof-of-delivery, and read the full
+  tracking event history. A documented webhook surface pushes ~33 lifecycle
+  events — planning, inbound scan, outbound pickup/dropoff, proof-of-delivery
+  and exceptions — to a registered endpoint. Jitsu publishes an OpenAPI 3.0.1
+  contract, nine first-party SDKs, a staging environment with a lifecycle
+  simulation API, and a public status page.
+image: https://docs.gojitsu.com/static/images/logo-jitsu.svg
 url: https://raw.githubusercontent.com/api-evangelist/axlehire/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-06'
 modified: '2026-08-06'
 tags:
 - Company
-apis: []
+- Logistics
+- Last Mile Delivery
+- Shipping
+- Parcel
+- Transportation
+- Supply Chain
+- Ecommerce
+- Tracking
+- Webhooks
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: axlehire:jitsu-rest-api
+  name: Jitsu REST API
+  description: >-
+    The Jitsu (formerly AxleHire) v3 REST API for last-mile delivery. Submit
+    shipments, generate and retrieve shipping labels in ZPL, PNG or PDF, add and
+    update parcels, update pickup/dropoff addresses and delivery windows, cancel
+    shipments, mark shipments as shipped in bulk, retrieve delivery fees and
+    rating estimates, pull proof-of-delivery photos, and read tracking event
+    history by tracking code. Authentication is a per-account API token sent in
+    the Authorization header. Staging and production are separate environments.
+  humanURL: https://docs.gojitsu.com/
+  baseURL: https://api.gojitsu.com
+  tags:
+  - Shipping
+  - Tracking
+  - Last Mile Delivery
+  - Labels
+  - Logistics
+  properties:
+  - type: OpenAPI
+    url: openapi/axlehire-jitsu-rest-api.yml
+  - type: Documentation
+    url: https://docs.gojitsu.com/
+  - type: APIReference
+    url: https://docs.gojitsu.com/#/openapi.yaml
+  - type: Overlay
+    url: overlays/axlehire-jitsu-rest-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/axlehire-webhooks.yml
+  - type: DataModel
+    url: data-model/axlehire-data-model.yml
 common:
+- type: DomainSecurity
+  url: security/axlehire-domain-security.yml
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://gojitsu.com/
+- type: Documentation
+  url: https://docs.gojitsu.com/
+- type: APIReference
+  url: https://docs.gojitsu.com/#/openapi.yaml
+- type: GettingStarted
+  url: https://docs.gojitsu.com/#/docs/QuickStart.md
+- type: Authentication
+  url: authentication/axlehire-authentication.yml
+- type: SDKs
+  url: packages/axlehire-packages.yml
+- type: Packages
+  url: packages/axlehire-packages.yml
+- type: Sandbox
+  url: sandbox/axlehire-sandbox.yml
+- type: Login
+  url: https://client.gojitsu.com/
+- type: Support
+  url: https://gojitsu.com/support
+- type: Blog
+  url: https://gojitsu.com/news-insights
+- type: TermsOfService
+  url: https://gojitsu.com/terms
+- type: PrivacyPolicy
+  url: https://gojitsu.com/privacy
+- type: StatusPage
+  url: https://status.gojitsu.com/
+- type: Lifecycle
+  url: lifecycle/axlehire-lifecycle.yml
+- type: Webhooks
+  url: asyncapi/axlehire-webhooks.yml
+- type: ErrorCatalog
+  url: errors/axlehire-problem-types.yml
+- type: RateLimits
+  url: rate-limits/axlehire-rate-limits.yml
+- type: Conventions
+  url: conventions/axlehire-conventions.yml
+- type: Conformance
+  url: conformance/axlehire-conformance.yml
+- type: Components
+  url: components/axlehire-components.yml
+- type: DataModel
+  url: data-model/axlehire-data-model.yml
+- type: Examples
+  url: examples/axlehire-submit-shipment-example.json
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/axlehire-llms.txt
+- type: Overlay
+  url: overlays/axlehire-jitsu-rest-api-overlay.yaml
+- type: DeveloperPortal
+  url: https://docs.gojitsu.com/
+- type: Security
+  url: security/axlehire-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  url: security/axlehire-vulnerability-disclosure.yml
+- type: SecurityPolicy
+  url: https://gojitsu.com/security
+- type: TrustCenter
+  url: security/axlehire-trust-center.yml
+- type: Compliance
+  url: security/axlehire-trust-center.yml
+
+x-enrichment:
+  date: '2026-08-06'
+  status: enriched
+  artifacts_added: 21
+  pass: local-v1
