@@ -37,33 +37,93 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- aid: axlehire:jitsu-rest-api
-  name: Jitsu REST API
-  description: >-
-    The Jitsu (formerly AxleHire) v3 REST API for last-mile delivery. Submit
-    shipments, generate and retrieve shipping labels in ZPL, PNG or PDF, add and
-    update parcels, update pickup/dropoff addresses and delivery windows, cancel
-    shipments, mark shipments as shipped in bulk, retrieve delivery fees and
-    rating estimates, pull proof-of-delivery photos, and read tracking event
-    history by tracking code. Authentication is a per-account API token sent in
-    the Authorization header. Staging and production are separate environments.
+- aid: axlehire:axlehire-assignment-information-api
+  name: AxleHire (Jitsu) Assignment Information API
+  description: Assignment specific calls
   humanURL: https://docs.gojitsu.com/
   baseURL: https://api.gojitsu.com
   tags:
-  - Shipping
-  - Tracking
-  - Last Mile Delivery
-  - Labels
-  - Logistics
+  - Assignment Information
   properties:
   - type: OpenAPI
-    url: openapi/axlehire-jitsu-rest-api.yml
+    url: openapi/axlehire-assignment-information-api-openapi.yml
   - type: Documentation
     url: https://docs.gojitsu.com/
   - type: APIReference
     url: https://docs.gojitsu.com/#/openapi.yaml
-  - type: Overlay
-    url: overlays/axlehire-jitsu-rest-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/axlehire-webhooks.yml
+  - type: DataModel
+    url: data-model/axlehire-data-model.yml
+- aid: axlehire:axlehire-driver-information-api
+  name: AxleHire (Jitsu) Driver Information API
+  description: Driver specific calls
+  humanURL: https://docs.gojitsu.com/
+  baseURL: https://api.gojitsu.com
+  tags:
+  - Driver Information
+  properties:
+  - type: OpenAPI
+    url: openapi/axlehire-driver-information-api-openapi.yml
+  - type: Documentation
+    url: https://docs.gojitsu.com/
+  - type: APIReference
+    url: https://docs.gojitsu.com/#/openapi.yaml
+  - type: Webhooks
+    url: asyncapi/axlehire-webhooks.yml
+  - type: DataModel
+    url: data-model/axlehire-data-model.yml
+- aid: axlehire:axlehire-partner-information-api
+  name: AxleHire (Jitsu) Partner Information API
+  description: >-
+    The Partner Information API from AxleHire (Jitsu) — 1 operation(s) for partner information.
+  humanURL: https://docs.gojitsu.com/
+  baseURL: https://api.gojitsu.com
+  tags:
+  - Partner Information
+  properties:
+  - type: OpenAPI
+    url: openapi/axlehire-partner-information-api-openapi.yml
+  - type: Documentation
+    url: https://docs.gojitsu.com/
+  - type: APIReference
+    url: https://docs.gojitsu.com/#/openapi.yaml
+  - type: Webhooks
+    url: asyncapi/axlehire-webhooks.yml
+  - type: DataModel
+    url: data-model/axlehire-data-model.yml
+- aid: axlehire:axlehire-shipping-information-api
+  name: AxleHire (Jitsu) Shipping Information API
+  description: Shipment specific calls
+  humanURL: https://docs.gojitsu.com/
+  baseURL: https://api.gojitsu.com
+  tags:
+  - Shipping Information
+  properties:
+  - type: OpenAPI
+    url: openapi/axlehire-shipping-information-api-openapi.yml
+  - type: Documentation
+    url: https://docs.gojitsu.com/
+  - type: APIReference
+    url: https://docs.gojitsu.com/#/openapi.yaml
+  - type: Webhooks
+    url: asyncapi/axlehire-webhooks.yml
+  - type: DataModel
+    url: data-model/axlehire-data-model.yml
+- aid: axlehire:axlehire-tracking-information-api
+  name: AxleHire (Jitsu) Tracking Information API
+  description: Tracking specific calls
+  humanURL: https://docs.gojitsu.com/
+  baseURL: https://api.gojitsu.com
+  tags:
+  - Tracking Information
+  properties:
+  - type: OpenAPI
+    url: openapi/axlehire-tracking-information-api-openapi.yml
+  - type: Documentation
+    url: https://docs.gojitsu.com/
+  - type: APIReference
+    url: https://docs.gojitsu.com/#/openapi.yaml
   - type: Webhooks
     url: asyncapi/axlehire-webhooks.yml
   - type: DataModel
