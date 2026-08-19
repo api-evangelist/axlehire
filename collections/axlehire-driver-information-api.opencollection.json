@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jitsu REST Driver Information API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Driver Information",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tip Driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/tip",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Tip driver for shipment"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,144 @@
+openapi: 3.2.0
+info:
+  title: Jitsu REST Driver Information API
+  description: 'The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.
+
+
+    **Authentication**
+
+
+    All requests require a token in the `Authorization` header:
+
+    ```
+
+    Authorization: Token YOUR_API_TOKEN
+
+    ```
+
+    Generate your token in the Client Portal under Settings → API Token.
+
+
+    **Typical Shipment Lifecycle**
+
+
+    `CREATED` → `GEOCODED` → `ASSIGNED` → `PICKUP_EN_ROUTE` → `PICKED_UP` → `DROPOFF_EN_ROUTE` → `DELIVERED`
+
+
+    See the [Integration Guide](https://docs.gojitsu.com) for the full lifecycle, webhook events, and error handling reference.
+
+
+    For questions or integration support, contact [api@gojitsu.com](mailto:api@gojitsu.com).'
+  contact:
+    name: Jitsu API Support
+    email: api@gojitsu.com
+    url: https://gojitsu.com
+  version: 3.0.0
+servers:
+- url: https://api.staging.gojitsu.com
+  description: Staging
+- url: https://api.gojitsu.com
+  description: Production
+security:
+- Authorization: []
+tags:
+- name: Driver Information
+  description: Driver specific calls
+paths:
+  /v3/shipments/{shipment_id}/tip:
+    post:
+      summary: Tip Driver
+      description: Tip driver for shipment
+      operationId: reportTip
+      parameters:
+      - name: shipment_id
+        description: Shipment ID
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/AssignmentId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tip'
+            examples:
+              Example 1:
+                value:
+                  currency: USD
+                  amount: 60.123
+                  remark: Quick and efficient
+        required: true
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+        2XX:
+          description: default response
+          content:
+            application/json: {}
+      tags:
+      - Driver Information
+components:
+  schemas:
+    AssignmentId:
+      title: AssignmentId
+      type: integer
+      example: 7890
+      readOnly: true
+      description: Unique identifier for delivery assignment
+    Tip:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+        shipment_id:
+          type: integer
+          format: int64
+        stop_id:
+          type: integer
+          format: int64
+        assignment_id:
+          type: integer
+          format: int64
+        driver_id:
+          type: integer
+          format: int64
+        courier_id:
+          type: integer
+          format: int64
+        remark:
+          type: string
+        created_ts:
+          type: string
+          format: date-time
+        updated_ts:
+          type: string
+          format: date-time
+        status:
+          type: string
+        source:
+          type: string
+        payment_through:
+          type: string
+        payment_service_id:
+          type: string
+        service_fee:
+          type: number
+          format: double
+        precalculated_service_fee:
+          type: number
+          format: double
+      description: ''
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header
+      description: '**Authorization header for all calls in format: ''Authorization : Token {YOUR_TOKEN}''**'

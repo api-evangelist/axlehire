@@ -1,0 +1,266 @@
+openapi: 3.2.0
+info:
+  title: Jitsu REST Partner Information API
+  description: 'The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.
+
+
+    **Authentication**
+
+
+    All requests require a token in the `Authorization` header:
+
+    ```
+
+    Authorization: Token YOUR_API_TOKEN
+
+    ```
+
+    Generate your token in the Client Portal under Settings → API Token.
+
+
+    **Typical Shipment Lifecycle**
+
+
+    `CREATED` → `GEOCODED` → `ASSIGNED` → `PICKUP_EN_ROUTE` → `PICKED_UP` → `DROPOFF_EN_ROUTE` → `DELIVERED`
+
+
+    See the [Integration Guide](https://docs.gojitsu.com) for the full lifecycle, webhook events, and error handling reference.
+
+
+    For questions or integration support, contact [api@gojitsu.com](mailto:api@gojitsu.com).'
+  contact:
+    name: Jitsu API Support
+    email: api@gojitsu.com
+    url: https://gojitsu.com
+  version: 3.0.0
+servers:
+- url: https://api.staging.gojitsu.com
+  description: Staging
+- url: https://api.gojitsu.com
+  description: Production
+security:
+- Authorization: []
+tags:
+- name: Partner Information
+paths:
+  /v3/partner/tracking/{tracking_code}/events:
+    parameters:
+    - schema:
+        type: string
+      name: tracking_code
+      in: path
+      required: true
+    get:
+      summary: Partner Track Shipment
+      description: 'Returns tracking events post purchase, requires additional configuration coordinated with Jitsu
+
+
+        **For Partners Only**'
+      operationId: retrieveEvents
+      parameters:
+      - name: tracking_code
+        description: Tracking Code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: Array of tracking event
+          content:
+            application/json:
+              examples:
+                Example:
+                  value:
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:15:19.000Z'
+                    geolocation:
+                      latitude: 30.39480879213078
+                      longitude: -87.26686378082174
+                    signal: DROPOFF_FAILED
+                    next_destination: DROP_OFF
+                    remark: Too far away
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:10:56.000Z'
+                    geolocation:
+                      latitude: 30.394913617408267
+                      longitude: -87.26681762984384
+                    signal: DROPOFF_READY
+                    eta: 1000
+                    next_destination: DROP_OFF
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:05:16.000Z'
+                    geolocation:
+                      latitude: 30.396216413495207
+                      longitude: -87.28009472505788
+                    signal: DROPOFF_EN_ROUTE
+                    eta: 314000
+                    next_destination: DROP_OFF
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:05:08.000Z'
+                    geolocation:
+                      latitude: 30.396222403166874
+                      longitude: -87.28008684726137
+                    signal: PICKUP_SUCCEEDED
+                    eta: 314000
+                    next_destination: PICK_UP
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:04:48.000Z'
+                    geolocation:
+                      latitude: 30.396216545549482
+                      longitude: -87.28009610748641
+                    signal: PICKUP_READY
+                    eta: 10000
+                    next_destination: PICK_UP
+                  - shipment_id: 1234
+                    ts: '2019-03-27T21:49:28.000Z'
+                    geolocation:
+                      latitude: 30.41565254029608
+                      longitude: -87.2429396669947
+                    signal: PICKUP_EN_ROUTE
+                    eta: 518000
+                    next_destination: PICK_UP
+                  - shipment_id: 1234
+                    ts: '2019-03-27T21:49:28.000Z'
+                    geolocation:
+                      latitude: 30.4156494140625
+                      longitude: -87.2429396669947
+                    signal: PICKUP_EN_ROUTE
+                    eta: 518000
+                    next_destination: PICK_UP
+                  - shipment_id: 1234
+                    ts: '2019-03-27T21:25:00.294Z'
+                    signal: ASSIGNED
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackingEvent'
+          headers: {}
+        2XX:
+          description: Array of tracking event
+          content:
+            application/json:
+              examples:
+                Example:
+                  value:
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:15:19.000Z'
+                    geolocation:
+                      latitude: 30.39480879213078
+                      longitude: -87.26686378082174
+                    signal: DROPOFF_FAILED
+                    next_destination: DROP_OFF
+                    remark: Too far away
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:10:56.000Z'
+                    geolocation:
+                      latitude: 30.394913617408267
+                      longitude: -87.26681762984384
+                    signal: DROPOFF_READY
+                    eta: 1000
+                    next_destination: DROP_OFF
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:05:16.000Z'
+                    geolocation:
+                      latitude: 30.396216413495207
+                      longitude: -87.28009472505788
+                    signal: DROPOFF_EN_ROUTE
+                    eta: 314000
+                    next_destination: DROP_OFF
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:05:08.000Z'
+                    geolocation:
+                      latitude: 30.396222403166874
+                      longitude: -87.28008684726137
+                    signal: PICKUP_SUCCEEDED
+                    eta: 314000
+                    next_destination: PICK_UP
+                  - shipment_id: 1234
+                    ts: '2019-03-27T22:04:48.000Z'
+                    geolocation:
+                      latitude: 30.396216545549482
+                      longitude: -87.28009610748641
+                    signal: PICKUP_READY
+                    eta: 10000
+                    next_destination: PICK_UP
+                  - shipment_id: 1234
+                    ts: '2019-03-27T21:49:28.000Z'
+                    geolocation:
+                      latitude: 30.41565254029608
+                      longitude: -87.2429396669947
+                    signal: PICKUP_EN_ROUTE
+                    eta: 518000
+                    next_destination: PICK_UP
+                  - shipment_id: 1234
+                    ts: '2019-03-27T21:49:28.000Z'
+                    geolocation:
+                      latitude: 30.4156494140625
+                      longitude: -87.2429396669947
+                    signal: PICKUP_EN_ROUTE
+                    eta: 518000
+                    next_destination: PICK_UP
+                  - shipment_id: 1234
+                    ts: '2019-03-27T21:25:00.294Z'
+                    signal: ASSIGNED
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackingEvent'
+      tags:
+      - Partner Information
+components:
+  schemas:
+    TrackingEvent:
+      title: Tracking Event
+      type: object
+      properties:
+        shipment_id:
+          type: integer
+        ts:
+          type: string
+          format: date-time
+          description: Timestamp as a ISO-8601 string
+        geolocation:
+          $ref: '#/components/schemas/Geolocation'
+        signal:
+          type: string
+          description: ' Shipment event'
+          example: DROPOFF_SUCCEEDED
+        eta:
+          type: integer
+          example: 12000
+          description: Estimated time of arrival
+        remark:
+          type: string
+          description: Remark provided by driver
+        next_destination:
+          type: string
+          example: DROP_OFF
+          description: Next planned destination type
+        type:
+          type: string
+          description: Event category
+          example: OUTBOUND
+    Geolocation:
+      title: Geolocation
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: float
+          example: 33.90218024032627
+        longitude:
+          type: number
+          format: float
+          example: -118.04558467543646
+        altitude:
+          type: number
+          format: float
+          example: 26.378598849334196
+      description: Coordinate based location
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header
+      description: '**Authorization header for all calls in format: ''Authorization : Token {YOUR_TOKEN}''**'

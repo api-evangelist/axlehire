@@ -1,0 +1,206 @@
+{
+  "item": [
+    {
+      "id": "485fae3b-8531-4b36-b026-537e6c172d16",
+      "name": "Partner Information",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "32fb39a4-abef-4291-8d3b-4f298a2fd679",
+          "name": "Partner Track Shipment",
+          "request": {
+            "name": "Partner Track Shipment",
+            "description": {
+              "content": "Returns tracking events post purchase, requires additional configuration coordinated with Jitsu\n\n**For Partners Only**",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "partner",
+                "tracking",
+                ":tracking_code",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tracking_code",
+                  "description": "(Required) Tracking Code"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "121750a4-2890-4100-8674-7deeecf097d3",
+              "name": "Array of tracking event",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "partner",
+                    "tracking",
+                    ":tracking_code",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_code",
+                      "description": "(Required) Tracking Code"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:15:19.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.39480879213078,\n      \"longitude\": -87.26686378082174\n    },\n    \"signal\": \"DROPOFF_FAILED\",\n    \"next_destination\": \"DROP_OFF\",\n    \"remark\": \"Too far away\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:10:56.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.394913617408267,\n      \"longitude\": -87.26681762984384\n    },\n    \"signal\": \"DROPOFF_READY\",\n    \"eta\": 1000,\n    \"next_destination\": \"DROP_OFF\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:05:16.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.396216413495207,\n      \"longitude\": -87.28009472505788\n    },\n    \"signal\": \"DROPOFF_EN_ROUTE\",\n    \"eta\": 314000,\n    \"next_destination\": \"DROP_OFF\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:05:08.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.396222403166874,\n      \"longitude\": -87.28008684726137\n    },\n    \"signal\": \"PICKUP_SUCCEEDED\",\n    \"eta\": 314000,\n    \"next_destination\": \"PICK_UP\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:04:48.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.396216545549482,\n      \"longitude\": -87.28009610748641\n    },\n    \"signal\": \"PICKUP_READY\",\n    \"eta\": 10000,\n    \"next_destination\": \"PICK_UP\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T21:49:28.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.41565254029608,\n      \"longitude\": -87.2429396669947\n    },\n    \"signal\": \"PICKUP_EN_ROUTE\",\n    \"eta\": 518000,\n    \"next_destination\": \"PICK_UP\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T21:49:28.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.4156494140625,\n      \"longitude\": -87.2429396669947\n    },\n    \"signal\": \"PICKUP_EN_ROUTE\",\n    \"eta\": 518000,\n    \"next_destination\": \"PICK_UP\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T21:25:00.294Z\",\n    \"signal\": \"ASSIGNED\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c72e2c9-78a0-421c-b503-03063858d675",
+              "name": "Array of tracking event",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "partner",
+                    "tracking",
+                    ":tracking_code",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_code",
+                      "description": "(Required) Tracking Code"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:15:19.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.39480879213078,\n      \"longitude\": -87.26686378082174\n    },\n    \"signal\": \"DROPOFF_FAILED\",\n    \"next_destination\": \"DROP_OFF\",\n    \"remark\": \"Too far away\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:10:56.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.394913617408267,\n      \"longitude\": -87.26681762984384\n    },\n    \"signal\": \"DROPOFF_READY\",\n    \"eta\": 1000,\n    \"next_destination\": \"DROP_OFF\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:05:16.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.396216413495207,\n      \"longitude\": -87.28009472505788\n    },\n    \"signal\": \"DROPOFF_EN_ROUTE\",\n    \"eta\": 314000,\n    \"next_destination\": \"DROP_OFF\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:05:08.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.396222403166874,\n      \"longitude\": -87.28008684726137\n    },\n    \"signal\": \"PICKUP_SUCCEEDED\",\n    \"eta\": 314000,\n    \"next_destination\": \"PICK_UP\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T22:04:48.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.396216545549482,\n      \"longitude\": -87.28009610748641\n    },\n    \"signal\": \"PICKUP_READY\",\n    \"eta\": 10000,\n    \"next_destination\": \"PICK_UP\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T21:49:28.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.41565254029608,\n      \"longitude\": -87.2429396669947\n    },\n    \"signal\": \"PICKUP_EN_ROUTE\",\n    \"eta\": 518000,\n    \"next_destination\": \"PICK_UP\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T21:49:28.000Z\",\n    \"geolocation\": {\n      \"latitude\": 30.4156494140625,\n      \"longitude\": -87.2429396669947\n    },\n    \"signal\": \"PICKUP_EN_ROUTE\",\n    \"eta\": 518000,\n    \"next_destination\": \"PICK_UP\"\n  },\n  {\n    \"shipment_id\": 1234,\n    \"ts\": \"2019-03-27T21:25:00.294Z\",\n    \"signal\": \"ASSIGNED\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.staging.gojitsu.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a641c97f-85dd-4371-b6e1-56972e4374ef",
+    "name": "Jitsu REST Partner Information API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.\n\n**Authentication**\n\nAll requests require a token in the `Authorization` header:\n```\nAuthorization: Token YOUR_API_TOKEN\n```\nGenerate your token in the Client Portal under Settings → API Token.\n\n**Typical Shipment Lifecycle**\n\n`CREATED` → `GEOCODED` → `ASSIGNED` → `PICKUP_EN_ROUTE` → `PICKED_UP` → `DROPOFF_EN_ROUTE` → `DELIVERED`\n\nSee the [Integration Guide](https://docs.gojitsu.com) for the full lifecycle, webhook events, and error handling reference.\n\nFor questions or integration support, contact [api@gojitsu.com](mailto:api@gojitsu.com).\n\nContact Support:\n Name: Jitsu API Support\n Email: api@gojitsu.com",
+      "type": "text/plain"
+    }
+  }
+}

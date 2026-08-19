@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jitsu REST Assignment Information API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Assignment Information",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/assignments/:assignment_id",
+            "params": [
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "Assignment ID"
+              }
+            ]
+          },
+          "docs": "Get an assignment by its id"
+        },
+        {
+          "info": {
+            "name": "Retrieve Shipments by Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/assignments/:assignment_id/shipments",
+            "params": [
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "Assignment ID"
+              }
+            ]
+          },
+          "docs": "Get shipments for an assignmentId"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

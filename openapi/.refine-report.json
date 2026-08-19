@@ -1,0 +1,29 @@
+{
+  "provider": "axlehire",
+  "sources": [
+    "axlehire-assignment-information-api-openapi.yml",
+    "axlehire-driver-information-api-openapi.yml",
+    "axlehire-partner-information-api-openapi.yml",
+    "axlehire-shipping-information-api-openapi.yml",
+    "axlehire-tracking-information-api-openapi.yml"
+  ],
+  "outputs": [
+    "axlehire-assignment-information-api-openapi.yml",
+    "axlehire-driver-information-api-openapi.yml",
+    "axlehire-partner-information-api-openapi.yml",
+    "axlehire-shipping-information-api-openapi.yml",
+    "axlehire-tracking-information-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "axlehire-assignment-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "axlehire-driver-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "axlehire-partner-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "axlehire-shipping-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "axlehire-tracking-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

@@ -1,0 +1,232 @@
+{
+  "item": [
+    {
+      "id": "13737420-b730-4551-adfd-d5cdcccbb98a",
+      "name": "Driver Information",
+      "description": {
+        "content": "Driver specific calls",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5ef4d4f3-73de-438e-8cff-c3794f694c8c",
+          "name": "Tip Driver",
+          "request": {
+            "name": "Tip Driver",
+            "description": {
+              "content": "Tip driver for shipment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "shipments",
+                ":shipment_id",
+                "tip"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "shipment_id",
+                  "description": "(Required) Shipment ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<integer>\",\n  \"amount\": \"<double>\",\n  \"currency\": \"<string>\",\n  \"shipment_id\": \"<long>\",\n  \"stop_id\": \"<long>\",\n  \"assignment_id\": \"<long>\",\n  \"driver_id\": \"<long>\",\n  \"courier_id\": \"<long>\",\n  \"remark\": \"<string>\",\n  \"created_ts\": \"<dateTime>\",\n  \"updated_ts\": \"<dateTime>\",\n  \"status\": \"<string>\",\n  \"source\": \"<string>\",\n  \"payment_through\": \"<string>\",\n  \"payment_service_id\": \"<string>\",\n  \"service_fee\": \"<double>\",\n  \"precalculated_service_fee\": \"<double>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0f5698e3-e2ab-4e2f-adff-ec1aa09d7d3a",
+              "name": "default response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "shipments",
+                    ":shipment_id",
+                    "tip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "shipment_id",
+                      "description": "(Required) Shipment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currency\": \"USD\",\n  \"amount\": 60.123,\n  \"remark\": \"Quick and efficient\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d7ddd04-c6bc-420c-93eb-8a05148339ac",
+              "name": "default response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "shipments",
+                    ":shipment_id",
+                    "tip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "shipment_id",
+                      "description": "(Required) Shipment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currency\": \"USD\",\n  \"amount\": 60.123,\n  \"remark\": \"Quick and efficient\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.staging.gojitsu.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1c8cf773-d3b0-4344-9ce5-82bbfc5c7a02",
+    "name": "Jitsu REST Driver Information API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.\n\n**Authentication**\n\nAll requests require a token in the `Authorization` header:\n```\nAuthorization: Token YOUR_API_TOKEN\n```\nGenerate your token in the Client Portal under Settings → API Token.\n\n**Typical Shipment Lifecycle**\n\n`CREATED` → `GEOCODED` → `ASSIGNED` → `PICKUP_EN_ROUTE` → `PICKED_UP` → `DROPOFF_EN_ROUTE` → `DELIVERED`\n\nSee the [Integration Guide](https://docs.gojitsu.com) for the full lifecycle, webhook events, and error handling reference.\n\nFor questions or integration support, contact [api@gojitsu.com](mailto:api@gojitsu.com).\n\nContact Support:\n Name: Jitsu API Support\n Email: api@gojitsu.com",
+      "type": "text/plain"
+    }
+  }
+}

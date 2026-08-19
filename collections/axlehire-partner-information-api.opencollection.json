@@ -1,0 +1,44 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jitsu REST Partner Information API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Partner Information",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Partner Track Shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/partner/tracking/:tracking_code/events",
+            "params": [
+              {
+                "name": "tracking_code",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns tracking events post purchase, requires additional configuration coordinated with Jitsu\n\n**For Partners Only**"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

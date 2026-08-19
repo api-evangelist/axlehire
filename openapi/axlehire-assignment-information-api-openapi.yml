@@ -1,0 +1,765 @@
+openapi: 3.2.0
+info:
+  title: Jitsu REST Assignment Information API
+  description: 'The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.
+
+
+    **Authentication**
+
+
+    All requests require a token in the `Authorization` header:
+
+    ```
+
+    Authorization: Token YOUR_API_TOKEN
+
+    ```
+
+    Generate your token in the Client Portal under Settings → API Token.
+
+
+    **Typical Shipment Lifecycle**
+
+
+    `CREATED` → `GEOCODED` → `ASSIGNED` → `PICKUP_EN_ROUTE` → `PICKED_UP` → `DROPOFF_EN_ROUTE` → `DELIVERED`
+
+
+    See the [Integration Guide](https://docs.gojitsu.com) for the full lifecycle, webhook events, and error handling reference.
+
+
+    For questions or integration support, contact [api@gojitsu.com](mailto:api@gojitsu.com).'
+  contact:
+    name: Jitsu API Support
+    email: api@gojitsu.com
+    url: https://gojitsu.com
+  version: 3.0.0
+servers:
+- url: https://api.staging.gojitsu.com
+  description: Staging
+- url: https://api.gojitsu.com
+  description: Production
+security:
+- Authorization: []
+tags:
+- name: Assignment Information
+  description: Assignment specific calls
+paths:
+  /v3/assignments/{assignment_id}:
+    get:
+      summary: Retrieve Assignment
+      description: Get an assignment by its id
+      operationId: retrieve
+      parameters:
+      - name: assignment_id
+        description: Assignment ID
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/AssignmentId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Example:
+                  value:
+                    id: <ASSIGNMENT_ID>
+                    driver:
+                      name: Jason Statham
+                      phone_number: '123456789'
+                      profile_photo: https://someExpirableUrl.com
+                    vehicle:
+                      make: Audi
+                      model: S8
+                      color: Black
+                      license_plate: CA 6XRT009
+                    shipment_ids:
+                    - <SHIPMENT_ID_1>
+                    - <SHIPMENT_ID_2>
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+              examples:
+                Example:
+                  value:
+                    id: 0
+                    driver:
+                      name: Jason Statham
+                      phone_number: '123456789'
+                      profile_photo: https://someExpirableUrl.com
+                    vehicle:
+                      make: Ford
+                      model: Fiesta
+                      color: Silver
+                      license_plate: CA 6XRT009
+                    shipment_ids:
+                    - 0
+                    - 1
+      tags:
+      - Assignment Information
+  /v3/assignments/{assignment_id}/shipments:
+    get:
+      summary: Retrieve Shipments by Assignment
+      description: Get shipments for an assignmentId
+      operationId: retrieveShipments
+      parameters:
+      - name: assignment_id
+        description: Assignment ID
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/AssignmentId'
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shipment'
+              examples:
+                Example:
+                  value:
+                  - id: 11111
+                    internal_id: '123'
+                    workload: 0
+                    customer:
+                      name: John Doe
+                      phone_number: 123-456-7890
+                      email: john.d@example.com
+                    status: CREATED
+                    pickup_address:
+                      street2: Suite A
+                      street: 1937 Davis Street
+                      city: San Leandro
+                      state: CA
+                      zipcode: '94577'
+                      lat: 0
+                      lng: 0
+                    pickup_earliest_ts: '2018-10-13T15:36:50.052Z'
+                    pickup_latest_ts: '2018-10-13T16:23:50.052Z'
+                    pickup_note: 'Parking lot #3'
+                    pickup_buffer: 300
+                    dropoff_address:
+                      street2: Suite A
+                      street: 1937 Davis Street
+                      city: Berkeley
+                      state: CA
+                      zipcode: '94577'
+                      lat: 0
+                      lng: 0
+                    dropoff_earliest_ts: '2018-10-13T17:36:50.052Z'
+                    dropoff_latest_ts: '2018-10-14T17:23:50.052Z'
+                    dropoff_note: Please leave at the door, do not ring the bell!
+                    dropoff_buffer: 360
+                    delivery_proof_photo_required: false
+                    signature_required: true
+                    sms_enabled: true
+                    assignment_id: 0
+                    is_cancelled: false
+                    tracking_code: JITSU_UNIQUE_CODE_123 (auto-generated most of the time)
+                    tracking_url: https://recipient.gojitsu.com/xyz789
+                    rdi: COMMERCIAL
+                    remark:
+                      pickup: pickup remark left by driver/dispatcher if any
+                      dropoff: dropoff remark left by driver/dispatcher if any
+                      return: return remark left by driver/dispatcher if any
+                    parcels:
+                    - dimensions:
+                        unit: in
+                        height: 10
+                        width: 15
+                        length: 25
+                      weight:
+                        value: 1
+                        unit: lb
+        2XX:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shipment'
+              examples:
+                Example:
+                  value:
+                  - id: 0
+                    internal_id: '123'
+                    workload: 0
+                    customer:
+                      name: John Doe
+                      phone_number: 123-456-7890
+                      email: john.d@example.com
+                    status: CREATED
+                    pickup_address:
+                      street2: Suite A
+                      street: 1937 Davis Street
+                      city: San Leandro
+                      state: CA
+                      zipcode: '94577'
+                      lat: 0
+                      lng: 0
+                    pickup_earliest_ts: '2018-10-13T15:36:50.052Z'
+                    pickup_latest_ts: '2018-10-13T16:23:50.052Z'
+                    pickup_note: 'Parking lot #3'
+                    pickup_buffer: 300
+                    dropoff_address:
+                      street2: Suite A
+                      street: 1937 Davis Street
+                      city: Berkeley
+                      state: CA
+                      zipcode: '94577'
+                      lat: 0
+                      lng: 0
+                    dropoff_earliest_ts: '2018-10-13T17:36:50.052Z'
+                    dropoff_latest_ts: '2018-10-14T17:23:50.052Z'
+                    dropoff_note: Please leave at the door, do not ring the bell!
+                    dropoff_buffer: 360
+                    delivery_proof_photo_required: false
+                    signature_required: true
+                    sms_enabled: true
+                    assignment_id: 0
+                    is_cancelled: false
+                    tracking_code: JITSU_UNIQUE_CODE_123 (auto-generated most of the time)
+                    tracking_url: https://recipient.gojitsu.com/xyz789
+                    rdi: COMMERCIAL
+                    remark:
+                      pickup: pickup remark left by driver/dispatcher if any
+                      dropoff: dropoff remark left by driver/dispatcher if any
+                      return: return remark left by driver/dispatcher if any
+                    parcels:
+                    - dimensions:
+                        unit: in
+                        height: 10
+                        width: 15
+                        length: 25
+                      weight:
+                        value: 1
+                        unit: lb
+      tags:
+      - Assignment Information
+components:
+  schemas:
+    Driver:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: James
+        last_name:
+          type: string
+          example: Bond
+        phone_number:
+          type: string
+          example: '1234567890'
+          description: US phone number
+        profile_photo:
+          type: string
+        id:
+          type: integer
+    Dimension:
+      type: object
+      description: Size of parcel typically using height, width, and length
+      x-examples:
+        Example 1:
+          unit: in
+          height: 5.5
+          width: 2
+          length: 3
+          depth: 4.2
+      properties:
+        unit:
+          type: string
+          default: in
+          example: kg
+        height:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        length:
+          type: number
+          format: double
+        depth:
+          type: number
+          format: double
+    Phone-Number:
+      title: Phone-Number
+      type: string
+      example: '1234567865'
+      description: 10 digit phone number
+    Assignment:
+      type: object
+      description: Delivery assignment
+      properties:
+        id:
+          type: integer
+        driver:
+          $ref: '#/components/schemas/Driver'
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+        shipment_ids:
+          type: array
+          items:
+            type: integer
+    Vehicle:
+      type: object
+      description: Driver vehicle
+      properties:
+        make:
+          type: string
+          example: Aston Martin
+        model:
+          type: string
+          example: DB5
+        color:
+          type: string
+          example: Silver
+        license_plate:
+          type: string
+          example: BND-007
+        license_plate_state:
+          type: string
+          example: CA
+        id:
+          type: integer
+    Shipment:
+      type: object
+      x-examples:
+        example-1:
+          id: -9223372036854776000
+          customer:
+            name: string
+            email: string
+            phone_number: string
+          workload: -1.7976931348623157e+308
+          tags:
+          - string
+          status: DRAFT
+          price:
+            unit: string
+            base: 0
+            pre_delivery_adjustment: 0
+            post_delivery_adjustment: 0
+          parcels:
+          - id: string
+            description: string
+            dimensions:
+              unit: enum
+              height: 0
+              width: 0
+              length: 0
+              depth: 0
+            weight:
+              value: 0
+              unit: enum
+            category: string
+            type: string
+            status: string
+            quantity: 0
+            _created: '2019-08-24T14:15:22Z'
+            _updated: '2019-08-24T14:15:22Z'
+            _deleted: true
+            _etag: string
+            uid: string
+            shipment_id: 0
+            parcel_id: string
+          items:
+          - id: string
+            description: string
+            dimensions:
+              unit: string
+              height: 0
+              width: 0
+              length: 0
+              depth: 0
+            weight:
+              value: 0
+              unit: string
+            category: string
+            type: string
+            status: string
+            quantity: 0
+            _created: '2019-08-24T14:15:22Z'
+            _updated: '2019-08-24T14:15:22Z'
+            _deleted: true
+            _etag: string
+            uid: string
+            shipment_id: 0
+            parcel_id: string
+          actualDepartureTs: '2019-08-24T14:15:22Z'
+          internal_id: string
+          order_detail: string
+          pickup_address:
+            street: string
+            street2: string
+            city: string
+            state: string
+            zipcode: string
+            latitude: 0
+            longitude: 0
+          pickup_note: string
+          pickup_earliest_ts: '2019-08-24T14:15:22Z'
+          pickup_latest_ts: '2019-08-24T14:15:22Z'
+          pickup_buffer: -2147483648
+          dropoff_address:
+            street: string
+            street2: string
+            city: string
+            state: string
+            zipcode: string
+            latitude: 0
+            longitude: 0
+          dropoff_earliest_ts: '2019-08-24T14:15:22Z'
+          dropoff_latest_ts: '2019-08-24T14:15:22Z'
+          created: '2019-08-24T14:15:22Z'
+          dropoff_buffer: -2147483648
+          dropoff_note: string
+          delivery_proof_photo_required: true
+          sms_enabled: true
+          signature_required: true
+          id_required: true
+          assignment_id: -9223372036854776000
+          is_cancelled: true
+          tracking_code: string
+          tracking_url: string
+          remark:
+            pickup: string
+            dropoff: string
+            return: string
+          timezone: string
+          actual_arrival_ts: '2019-08-24T14:15:22Z'
+          delivery_items: string
+          warehouse_id: -9223372036854776000
+          display_status: string
+          asap: true
+          late: true
+          rdi: string
+          warehouse_facility_id: string
+          inbound_status: string
+          service_level: string
+          service_type: string
+          dropoff_access_code: string
+          dropoff_additional_instruction: string
+          extra:
+            property1: {}
+            property2: {}
+          region_code: string
+          code: string
+      description: Base shipment model
+      required:
+      - customer
+      - pickup_address
+      - dropoff_address
+      - dropoff_earliest_ts
+      - dropoff_latest_ts
+      - service_level
+      properties:
+        id:
+          type: integer
+          example: 1234
+          readOnly: true
+        customer:
+          $ref: '#/components/schemas/Customer'
+        workload:
+          type: number
+          format: double
+        tags:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - CREATED
+          - GEOCODED
+          - GEOCODE_FAILED
+          - ASSIGNED
+          - CANCELLED_BEFORE_PICKUP
+          - PICKUP_DELAY
+          - PICKUP_EN_ROUTE
+          - PICKUP_READY
+          - PICKUP_SUCCEEDED
+          - PICKUP_FAILED
+          - CANCELLED_AFTER_PICKUP
+          - DROPOFF_DELAY
+          - DROPOFF_EN_ROUTE
+          - DROPOFF_READY
+          - DROPOFF_FAILED
+          - DROPOFF_SUCCEEDED
+          - PICKUP_SCHEDULED
+          - RESCHEDULED
+          - RETURN_DELAY
+          - RETURN_EN_ROUTE
+          - RETURN_READY
+          - RETURN_FAILED
+          - RETURN_SUCCEEDED
+          - RETURN_DAMAGED
+          - DAMAGED
+          - UNDELIVERABLE
+          - DISPOSABLE
+          - UNSERVICEABLE
+          - RETURNED_TO_CLIENT_PENDING
+          - RETURNED_TO_CLIENT_SUCCEEDED
+          readOnly: true
+        parcels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parcel'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parcel'
+        actualDepartureTs:
+          type: string
+          format: date-time
+          readOnly: true
+        internal_id:
+          type: string
+        order_detail:
+          type: string
+          readOnly: true
+        pickup_address:
+          $ref: '#/components/schemas/Address'
+        pickup_note:
+          type: string
+        pickup_earliest_ts:
+          type: string
+          format: date-time
+        pickup_latest_ts:
+          type: string
+          format: date-time
+        pickup_buffer:
+          type: integer
+          format: int32
+        dropoff_address:
+          $ref: '#/components/schemas/Address'
+        dropoff_earliest_ts:
+          type: string
+          format: date-time
+        dropoff_latest_ts:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        dropoff_buffer:
+          type: integer
+          format: int32
+        dropoff_note:
+          type: string
+        delivery_proof_photo_required:
+          type: boolean
+        sms_enabled:
+          type: boolean
+        signature_required:
+          type: boolean
+        id_required:
+          type: boolean
+        assignment_id:
+          type: integer
+          readOnly: true
+        is_cancelled:
+          type: boolean
+          readOnly: true
+        tracking_url:
+          type: string
+          readOnly: true
+        tracking_code:
+          type: string
+        remark:
+          $ref: '#/components/schemas/Remark'
+        timezone:
+          type: string
+          readOnly: true
+        actual_arrival_ts:
+          type: string
+          format: date-time
+          readOnly: true
+        delivery_items:
+          type: string
+        warehouse_id:
+          type: integer
+          readOnly: true
+        display_status:
+          type: string
+          readOnly: true
+        asap:
+          type: boolean
+          readOnly: true
+        late:
+          type: boolean
+          readOnly: true
+        rdi:
+          type: string
+        warehouse_facility_id:
+          type: string
+          readOnly: true
+        inbound_status:
+          type: string
+          readOnly: true
+        service_level:
+          type: string
+          description: NEXT_DAY, SAME_DAY, STANDARD
+        dropoff_access_code:
+          type: string
+        dropoff_additional_instruction:
+          type: string
+          readOnly: true
+        extra:
+          type: object
+          description: 'Additional information '
+          additionalProperties:
+            type: object
+        region_code:
+          type: string
+          readOnly: true
+        code:
+          type: string
+          description: Brand code as set in portal
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        street2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipcode:
+          type: string
+        what3words:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      description: An address is a structured entity that contains address components
+      x-examples:
+        Example 1:
+          street: 1937 Davis Street
+          street2: Suite A
+          city: San Leandro
+          state: CA
+          zipcode: '94577'
+    Weight:
+      type: object
+      x-examples:
+        Example 1:
+          value: 1.5
+          unit: lb
+      description: Parcel weight
+      properties:
+        value:
+          type: number
+          format: double
+        unit:
+          type: string
+    Parcel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Jitsu Parcel Identifier
+        description:
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/Dimension'
+        weight:
+          $ref: '#/components/schemas/Weight'
+        category:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          description: Type of parcel
+          example: box
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        quantity:
+          type: integer
+          format: int32
+        _created:
+          type: string
+          format: date-time
+          readOnly: true
+        _updated:
+          type: string
+          format: date-time
+          readOnly: true
+        _deleted:
+          type: boolean
+          readOnly: true
+        _etag:
+          type: string
+          readOnly: true
+        uid:
+          type: string
+          readOnly: true
+        shipment_id:
+          type: integer
+        parcel_id:
+          type: string
+          description: Client internal parcel identifier
+          example: abc123
+    Email:
+      title: Email
+      type: string
+      example: john.doe@test.com
+      description: Properly formatted email address
+    AssignmentId:
+      title: AssignmentId
+      type: integer
+      example: 7890
+      readOnly: true
+      description: Unique identifier for delivery assignment
+    Remark:
+      type: object
+      properties:
+        pickup:
+          type: string
+        dropoff:
+          type: string
+        return:
+          type: string
+    Customer:
+      type: object
+      x-examples:
+        John Doe:
+          name: John Doe
+          email: john.d@example.com
+          phone_number: 123-456-7890
+      description: A customer represents the essential information we should know about your customer or the recipient.
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        email:
+          $ref: '#/components/schemas/Email'
+        phone_number:
+          $ref: '#/components/schemas/Phone-Number'
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header
+      description: '**Authorization header for all calls in format: ''Authorization : Token {YOUR_TOKEN}''**'

@@ -1,0 +1,354 @@
+{
+  "item": [
+    {
+      "id": "d502aec6-d980-4253-88fe-dcb86e666652",
+      "name": "Assignment Information",
+      "description": {
+        "content": "Assignment specific calls",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7a336efb-0c26-4d04-aaee-d5935b7aa74a",
+          "name": "Retrieve Assignment",
+          "request": {
+            "name": "Retrieve Assignment",
+            "description": {
+              "content": "Get an assignment by its id",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "assignments",
+                ":assignment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "assignment_id",
+                  "description": "(Required) Assignment ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c67ca6e8-55e6-421a-9a7b-1637ce2c8920",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "assignments",
+                    ":assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "assignment_id",
+                      "description": "(Required) Assignment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"<ASSIGNMENT_ID>\",\n  \"driver\": {\n    \"name\": \"Jason Statham\",\n    \"phone_number\": \"123456789\",\n    \"profile_photo\": \"https://someExpirableUrl.com\"\n  },\n  \"vehicle\": {\n    \"make\": \"Audi\",\n    \"model\": \"S8\",\n    \"color\": \"Black\",\n    \"license_plate\": \"CA 6XRT009\"\n  },\n  \"shipment_ids\": [\n    \"<SHIPMENT_ID_1>\",\n    \"<SHIPMENT_ID_2>\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "444aee04-98f3-4e21-8e58-786388179115",
+              "name": "default response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "assignments",
+                    ":assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "assignment_id",
+                      "description": "(Required) Assignment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 0,\n  \"driver\": {\n    \"name\": \"Jason Statham\",\n    \"phone_number\": \"123456789\",\n    \"profile_photo\": \"https://someExpirableUrl.com\"\n  },\n  \"vehicle\": {\n    \"make\": \"Ford\",\n    \"model\": \"Fiesta\",\n    \"color\": \"Silver\",\n    \"license_plate\": \"CA 6XRT009\"\n  },\n  \"shipment_ids\": [\n    0,\n    1\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d42aacc3-9d49-4cf1-a40a-2102802877dd",
+          "name": "Retrieve Shipments by Assignment",
+          "request": {
+            "name": "Retrieve Shipments by Assignment",
+            "description": {
+              "content": "Get shipments for an assignmentId",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "assignments",
+                ":assignment_id",
+                "shipments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "assignment_id",
+                  "description": "(Required) Assignment ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2db6ffbc-7587-4a41-8cfc-32331fedee5b",
+              "name": "default response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "assignments",
+                    ":assignment_id",
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "assignment_id",
+                      "description": "(Required) Assignment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 11111,\n    \"internal_id\": \"123\",\n    \"workload\": 0,\n    \"customer\": {\n      \"name\": \"John Doe\",\n      \"phone_number\": \"123-456-7890\",\n      \"email\": \"john.d@example.com\"\n    },\n    \"status\": \"CREATED\",\n    \"pickup_address\": {\n      \"street2\": \"Suite A\",\n      \"street\": \"1937 Davis Street\",\n      \"city\": \"San Leandro\",\n      \"state\": \"CA\",\n      \"zipcode\": \"94577\",\n      \"lat\": 0,\n      \"lng\": 0\n    },\n    \"pickup_earliest_ts\": \"2018-10-13T15:36:50.052Z\",\n    \"pickup_latest_ts\": \"2018-10-13T16:23:50.052Z\",\n    \"pickup_note\": \"Parking lot #3\",\n    \"pickup_buffer\": 300,\n    \"dropoff_address\": {\n      \"street2\": \"Suite A\",\n      \"street\": \"1937 Davis Street\",\n      \"city\": \"Berkeley\",\n      \"state\": \"CA\",\n      \"zipcode\": \"94577\",\n      \"lat\": 0,\n      \"lng\": 0\n    },\n    \"dropoff_earliest_ts\": \"2018-10-13T17:36:50.052Z\",\n    \"dropoff_latest_ts\": \"2018-10-14T17:23:50.052Z\",\n    \"dropoff_note\": \"Please leave at the door, do not ring the bell!\",\n    \"dropoff_buffer\": 360,\n    \"delivery_proof_photo_required\": false,\n    \"signature_required\": true,\n    \"sms_enabled\": true,\n    \"assignment_id\": 0,\n    \"is_cancelled\": false,\n    \"tracking_code\": \"JITSU_UNIQUE_CODE_123 (auto-generated most of the time)\",\n    \"tracking_url\": \"https://recipient.gojitsu.com/xyz789\",\n    \"rdi\": \"COMMERCIAL\",\n    \"remark\": {\n      \"pickup\": \"pickup remark left by driver/dispatcher if any\",\n      \"dropoff\": \"dropoff remark left by driver/dispatcher if any\",\n      \"return\": \"return remark left by driver/dispatcher if any\"\n    },\n    \"parcels\": [\n      {\n        \"dimensions\": {\n          \"unit\": \"in\",\n          \"height\": 10,\n          \"width\": 15,\n          \"length\": 25\n        },\n        \"weight\": {\n          \"value\": 1,\n          \"unit\": \"lb\"\n        }\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6295b12-2aae-4434-8f91-2da8237f3e21",
+              "name": "default response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "assignments",
+                    ":assignment_id",
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "assignment_id",
+                      "description": "(Required) Assignment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 0,\n    \"internal_id\": \"123\",\n    \"workload\": 0,\n    \"customer\": {\n      \"name\": \"John Doe\",\n      \"phone_number\": \"123-456-7890\",\n      \"email\": \"john.d@example.com\"\n    },\n    \"status\": \"CREATED\",\n    \"pickup_address\": {\n      \"street2\": \"Suite A\",\n      \"street\": \"1937 Davis Street\",\n      \"city\": \"San Leandro\",\n      \"state\": \"CA\",\n      \"zipcode\": \"94577\",\n      \"lat\": 0,\n      \"lng\": 0\n    },\n    \"pickup_earliest_ts\": \"2018-10-13T15:36:50.052Z\",\n    \"pickup_latest_ts\": \"2018-10-13T16:23:50.052Z\",\n    \"pickup_note\": \"Parking lot #3\",\n    \"pickup_buffer\": 300,\n    \"dropoff_address\": {\n      \"street2\": \"Suite A\",\n      \"street\": \"1937 Davis Street\",\n      \"city\": \"Berkeley\",\n      \"state\": \"CA\",\n      \"zipcode\": \"94577\",\n      \"lat\": 0,\n      \"lng\": 0\n    },\n    \"dropoff_earliest_ts\": \"2018-10-13T17:36:50.052Z\",\n    \"dropoff_latest_ts\": \"2018-10-14T17:23:50.052Z\",\n    \"dropoff_note\": \"Please leave at the door, do not ring the bell!\",\n    \"dropoff_buffer\": 360,\n    \"delivery_proof_photo_required\": false,\n    \"signature_required\": true,\n    \"sms_enabled\": true,\n    \"assignment_id\": 0,\n    \"is_cancelled\": false,\n    \"tracking_code\": \"JITSU_UNIQUE_CODE_123 (auto-generated most of the time)\",\n    \"tracking_url\": \"https://recipient.gojitsu.com/xyz789\",\n    \"rdi\": \"COMMERCIAL\",\n    \"remark\": {\n      \"pickup\": \"pickup remark left by driver/dispatcher if any\",\n      \"dropoff\": \"dropoff remark left by driver/dispatcher if any\",\n      \"return\": \"return remark left by driver/dispatcher if any\"\n    },\n    \"parcels\": [\n      {\n        \"dimensions\": {\n          \"unit\": \"in\",\n          \"height\": 10,\n          \"width\": 15,\n          \"length\": 25\n        },\n        \"weight\": {\n          \"value\": 1,\n          \"unit\": \"lb\"\n        }\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.staging.gojitsu.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e4d865e1-6dcd-46a5-a13b-1dd26c2f6a53",
+    "name": "Jitsu REST Assignment Information API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.\n\n**Authentication**\n\nAll requests require a token in the `Authorization` header:\n```\nAuthorization: Token YOUR_API_TOKEN\n```\nGenerate your token in the Client Portal under Settings → API Token.\n\n**Typical Shipment Lifecycle**\n\n`CREATED` → `GEOCODED` → `ASSIGNED` → `PICKUP_EN_ROUTE` → `PICKED_UP` → `DROPOFF_EN_ROUTE` → `DELIVERED`\n\nSee the [Integration Guide](https://docs.gojitsu.com) for the full lifecycle, webhook events, and error handling reference.\n\nFor questions or integration support, contact [api@gojitsu.com](mailto:api@gojitsu.com).\n\nContact Support:\n Name: Jitsu API Support\n Email: api@gojitsu.com",
+      "type": "text/plain"
+    }
+  }
+}

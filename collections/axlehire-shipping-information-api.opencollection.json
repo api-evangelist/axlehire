@@ -1,0 +1,674 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jitsu REST Shipping Information API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shipping Information",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Submit Shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit new shipment"
+        },
+        {
+          "info": {
+            "name": "Retrieve Shipment Label",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/label",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Label format"
+              }
+            ]
+          },
+          "docs": "Get label for a shipment"
+        },
+        {
+          "info": {
+            "name": "Retrieve Shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ]
+          },
+          "docs": "Get shipment by id"
+        },
+        {
+          "info": {
+            "name": "Update Shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update shipment by id"
+        },
+        {
+          "info": {
+            "name": "Update Individual Parcel",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/parcels/:id",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Parcel ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update specific parcel on a shipment"
+        },
+        {
+          "info": {
+            "name": "Delete Individual Parcel",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/parcels/:id",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Parcel ID"
+              }
+            ]
+          },
+          "docs": "Delete specific parcel for a shipment"
+        },
+        {
+          "info": {
+            "name": "Retrieve Parcels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/parcels",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ]
+          },
+          "docs": "Get parcels for a shipment"
+        },
+        {
+          "info": {
+            "name": "Create Parcels",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/parcels",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create parcels for shipment"
+        },
+        {
+          "info": {
+            "name": "Add Parcels",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/parcels",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              },
+              {
+                "name": "byId",
+                "value": "",
+                "type": "query",
+                "description": "By ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add parcels for shipment"
+        },
+        {
+          "info": {
+            "name": "Delete/Update Parcels",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/parcels",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              },
+              {
+                "name": "delete",
+                "value": "",
+                "type": "query",
+                "description": "Delete"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete or update parcels for a shipment"
+        },
+        {
+          "info": {
+            "name": "Delete All Parcels",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/parcels",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ]
+          },
+          "docs": "Delete all parcels for a shipment"
+        },
+        {
+          "info": {
+            "name": "Update Pickup Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/pickup_address",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update shipment pickup address"
+        },
+        {
+          "info": {
+            "name": "Update Dropoff Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/dropoff_address",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update shipment dropoff address"
+        },
+        {
+          "info": {
+            "name": "Update Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/customer",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update customer for shipment"
+        },
+        {
+          "info": {
+            "name": "Update Instruction Notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/notes",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update notes for a shipment"
+        },
+        {
+          "info": {
+            "name": "Mark Shipments Shipped",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/mark-shipped",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mark multiple shipments as shipped"
+        },
+        {
+          "info": {
+            "name": "Update Dropoff Time",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/dropoff-time",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets shipment dropoff time"
+        },
+        {
+          "info": {
+            "name": "Retrieve Shipment Fee",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/fee",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ]
+          },
+          "docs": "Get fee for a shipment"
+        },
+        {
+          "info": {
+            "name": "Get history of a shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/history",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ]
+          },
+          "docs": "Get history of a shipment"
+        },
+        {
+          "info": {
+            "name": "Retrieve Parcel Labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/parcels/label",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type"
+              }
+            ]
+          },
+          "docs": "Get all parcel labels for shipment"
+        },
+        {
+          "info": {
+            "name": "Cancel Shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/cancel",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancel a shipment by id"
+        },
+        {
+          "info": {
+            "name": "Signal Shipment Readiness",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/ready",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ]
+          },
+          "docs": "Signal shipment is ready to be picked up"
+        },
+        {
+          "info": {
+            "name": "Mark Shipment Shipped",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/mark-shipped",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mark individual shipment as shipped"
+        },
+        {
+          "info": {
+            "name": "Update Shipment Workload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/workload",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the workload of a shipment"
+        },
+        {
+          "info": {
+            "name": "Retrieve Parcel Label",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/parcels/:jitsu_parcel_id/label",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              },
+              {
+                "name": "jitsu_parcel_id",
+                "value": "",
+                "type": "path",
+                "description": "Jitsu Parcel ID"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type"
+              }
+            ]
+          },
+          "docs": "Get label for specified parcel"
+        },
+        {
+          "info": {
+            "name": "Update Dropoff Location Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/dropoff-location-info",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              },
+              {
+                "name": "notify_driver",
+                "value": "",
+                "type": "query",
+                "description": "Notify Driver"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates dropoff location info for a shipment"
+        },
+        {
+          "info": {
+            "name": "Estimated fee",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/rating",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get the estimated fee of a shipment"
+        },
+        {
+          "info": {
+            "name": "Retrieve Shipment Photos and Signature",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.gojitsu.com/v3/shipments/:shipment_id/pod",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path",
+                "description": "Shipment ID"
+              },
+              {
+                "name": "by",
+                "value": "",
+                "type": "query",
+                "description": "Optional parameter to use tracking_code instead of shipment_id"
+              }
+            ]
+          },
+          "docs": "Gets proof of delivery for a shipment"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
