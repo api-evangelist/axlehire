@@ -13,6 +13,18 @@ description: >-
   and exceptions — to a registered endpoint. Jitsu publishes an OpenAPI 3.0.1
   contract, nine first-party SDKs, a staging environment with a lifecycle
   simulation API, and a public status page.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://docs.gojitsu.com/static/images/logo-jitsu.svg
 url: https://raw.githubusercontent.com/api-evangelist/axlehire/refs/heads/main/apis.yml
 x-type: company
