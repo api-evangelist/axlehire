@@ -152,6 +152,9 @@ apis:
   - type: DataModel
     url: data-model/axlehire-data-model.yml
 common:
+- type: CapabilityMap
+  url: capabilities/axlehire-capability-edges.yml
+  name: AxleHire (Jitsu) Business Capability Map
 - type: DomainSecurity
   url: security/axlehire-domain-security.yml
 - type: Website
