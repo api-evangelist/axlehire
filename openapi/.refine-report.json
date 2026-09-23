@@ -1,11 +1,7 @@
 {
   "provider": "axlehire",
   "sources": [
-    "axlehire-assignment-information-api-openapi.yml",
-    "axlehire-driver-information-api-openapi.yml",
-    "axlehire-partner-information-api-openapi.yml",
-    "axlehire-shipping-information-api-openapi.yml",
-    "axlehire-tracking-information-api-openapi.yml"
+    "_original/axlehire-jitsu-rest-api.yml"
   ],
   "outputs": [
     "axlehire-assignment-information-api-openapi.yml",
@@ -18,12 +14,16 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "axlehire-assignment-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "axlehire-driver-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "axlehire-partner-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "axlehire-shipping-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "axlehire-tracking-information-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "axlehire-jitsu-rest-api.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "axlehire-jitsu-rest-api.yml: declared missing tag: Partner Information",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "axlehire-assignment-information-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "axlehire-driver-information-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "axlehire-partner-information-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "axlehire-shipping-information-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "axlehire-tracking-information-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

@@ -1,33 +1,7 @@
 openapi: 3.2.0
 info:
   title: Jitsu REST Partner Information API
-  description: 'The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.
-
-
-    **Authentication**
-
-
-    All requests require a token in the `Authorization` header:
-
-    ```
-
-    Authorization: Token YOUR_API_TOKEN
-
-    ```
-
-    Generate your token in the Client Portal under Settings → API Token.
-
-
-    **Typical Shipment Lifecycle**
-
-
-    `CREATED` → `GEOCODED` → `ASSIGNED` → `PICKUP_EN_ROUTE` → `PICKED_UP` → `DROPOFF_EN_ROUTE` → `DELIVERED`
-
-
-    See the [Integration Guide](https://docs.gojitsu.com) for the full lifecycle, webhook events, and error handling reference.
-
-
-    For questions or integration support, contact [api@gojitsu.com](mailto:api@gojitsu.com).'
+  description: The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.
   contact:
     name: Jitsu API Support
     email: api@gojitsu.com

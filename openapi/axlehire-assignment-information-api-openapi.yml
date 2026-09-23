@@ -1,33 +1,7 @@
 openapi: 3.2.0
 info:
   title: Jitsu REST Assignment Information API
-  description: 'The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.
-
-
-    **Authentication**
-
-
-    All requests require a token in the `Authorization` header:
-
-    ```
-
-    Authorization: Token YOUR_API_TOKEN
-
-    ```
-
-    Generate your token in the Client Portal under Settings → API Token.
-
-
-    **Typical Shipment Lifecycle**
-
-
-    `CREATED` → `GEOCODED` → `ASSIGNED` → `PICKUP_EN_ROUTE` → `PICKED_UP` → `DROPOFF_EN_ROUTE` → `DELIVERED`
-
-
-    See the [Integration Guide](https://docs.gojitsu.com) for the full lifecycle, webhook events, and error handling reference.
-
-
-    For questions or integration support, contact [api@gojitsu.com](mailto:api@gojitsu.com).'
+  description: The Jitsu API allows clients to submit shipments, retrieve shipment details and labels, track delivery events, and manage the full shipment lifecycle programmatically.
   contact:
     name: Jitsu API Support
     email: api@gojitsu.com
@@ -249,90 +223,84 @@ paths:
       - Assignment Information
 components:
   schemas:
-    Driver:
+    Address:
       type: object
       properties:
-        first_name:
+        street:
           type: string
-          example: James
-        last_name:
+        street2:
           type: string
-          example: Bond
-        phone_number:
+        city:
           type: string
-          example: '1234567890'
-          description: US phone number
-        profile_photo:
+        state:
           type: string
-        id:
-          type: integer
-    Dimension:
-      type: object
-      description: Size of parcel typically using height, width, and length
+        zipcode:
+          type: string
+        what3words:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      description: An address is a structured entity that contains address components
       x-examples:
         Example 1:
-          unit: in
-          height: 5.5
-          width: 2
-          length: 3
-          depth: 4.2
-      properties:
-        unit:
-          type: string
-          default: in
-          example: kg
-        height:
-          type: number
-          format: double
-        width:
-          type: number
-          format: double
-        length:
-          type: number
-          format: double
-        depth:
-          type: number
-          format: double
-    Phone-Number:
-      title: Phone-Number
-      type: string
-      example: '1234567865'
-      description: 10 digit phone number
-    Assignment:
+          street: 1937 Davis Street
+          street2: Suite A
+          city: San Leandro
+          state: CA
+          zipcode: '94577'
+    Parcel:
       type: object
-      description: Delivery assignment
       properties:
         id:
           type: integer
-        driver:
-          $ref: '#/components/schemas/Driver'
-        vehicle:
-          $ref: '#/components/schemas/Vehicle'
-        shipment_ids:
-          type: array
-          items:
-            type: integer
-    Vehicle:
-      type: object
-      description: Driver vehicle
-      properties:
-        make:
+          description: Jitsu Parcel Identifier
+        description:
           type: string
-          example: Aston Martin
-        model:
+        dimensions:
+          $ref: '#/components/schemas/Dimension'
+        weight:
+          $ref: '#/components/schemas/Weight'
+        category:
           type: string
-          example: DB5
-        color:
+          readOnly: true
+        type:
           type: string
-          example: Silver
-        license_plate:
+          description: Type of parcel
+          example: box
+          readOnly: true
+        status:
           type: string
-          example: BND-007
-        license_plate_state:
-          type: string
-          example: CA
-        id:
+          readOnly: true
+        quantity:
           type: integer
+          format: int32
+        _created:
+          type: string
+          format: date-time
+          readOnly: true
+        _updated:
+          type: string
+          format: date-time
+          readOnly: true
+        _deleted:
+          type: boolean
+          readOnly: true
+        _etag:
+          type: string
+          readOnly: true
+        uid:
+          type: string
+          readOnly: true
+        shipment_id:
+          type: integer
+        parcel_id:
+          type: string
+          description: Client internal parcel identifier
+          example: abc123
     Shipment:
       type: object
       x-examples:
@@ -629,35 +597,99 @@ components:
         code:
           type: string
           description: Brand code as set in portal
-    Address:
+    Remark:
       type: object
       properties:
-        street:
+        pickup:
           type: string
-        street2:
+        dropoff:
           type: string
-        city:
+        return:
           type: string
-        state:
+    Assignment:
+      type: object
+      description: Delivery assignment
+      properties:
+        id:
+          type: integer
+        driver:
+          $ref: '#/components/schemas/Driver'
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+        shipment_ids:
+          type: array
+          items:
+            type: integer
+    Driver:
+      type: object
+      properties:
+        first_name:
           type: string
-        zipcode:
+          example: James
+        last_name:
           type: string
-        what3words:
+          example: Bond
+        phone_number:
           type: string
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-      description: An address is a structured entity that contains address components
+          example: '1234567890'
+          description: US phone number
+        profile_photo:
+          type: string
+        id:
+          type: integer
+    Vehicle:
+      type: object
+      description: Driver vehicle
+      properties:
+        make:
+          type: string
+          example: Aston Martin
+        model:
+          type: string
+          example: DB5
+        color:
+          type: string
+          example: Silver
+        license_plate:
+          type: string
+          example: BND-007
+        license_plate_state:
+          type: string
+          example: CA
+        id:
+          type: integer
+    Dimension:
+      type: object
+      description: Size of parcel typically using height, width, and length
       x-examples:
         Example 1:
-          street: 1937 Davis Street
-          street2: Suite A
-          city: San Leandro
-          state: CA
-          zipcode: '94577'
+          unit: in
+          height: 5.5
+          width: 2
+          length: 3
+          depth: 4.2
+      properties:
+        unit:
+          type: string
+          default: in
+          example: kg
+        height:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        length:
+          type: number
+          format: double
+        depth:
+          type: number
+          format: double
+    Phone-Number:
+      title: Phone-Number
+      type: string
+      example: '1234567865'
+      description: 10 digit phone number
     Weight:
       type: object
       x-examples:
@@ -670,75 +702,6 @@ components:
           type: number
           format: double
         unit:
-          type: string
-    Parcel:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Jitsu Parcel Identifier
-        description:
-          type: string
-        dimensions:
-          $ref: '#/components/schemas/Dimension'
-        weight:
-          $ref: '#/components/schemas/Weight'
-        category:
-          type: string
-          readOnly: true
-        type:
-          type: string
-          description: Type of parcel
-          example: box
-          readOnly: true
-        status:
-          type: string
-          readOnly: true
-        quantity:
-          type: integer
-          format: int32
-        _created:
-          type: string
-          format: date-time
-          readOnly: true
-        _updated:
-          type: string
-          format: date-time
-          readOnly: true
-        _deleted:
-          type: boolean
-          readOnly: true
-        _etag:
-          type: string
-          readOnly: true
-        uid:
-          type: string
-          readOnly: true
-        shipment_id:
-          type: integer
-        parcel_id:
-          type: string
-          description: Client internal parcel identifier
-          example: abc123
-    Email:
-      title: Email
-      type: string
-      example: john.doe@test.com
-      description: Properly formatted email address
-    AssignmentId:
-      title: AssignmentId
-      type: integer
-      example: 7890
-      readOnly: true
-      description: Unique identifier for delivery assignment
-    Remark:
-      type: object
-      properties:
-        pickup:
-          type: string
-        dropoff:
-          type: string
-        return:
           type: string
     Customer:
       type: object
@@ -757,6 +720,17 @@ components:
           $ref: '#/components/schemas/Email'
         phone_number:
           $ref: '#/components/schemas/Phone-Number'
+    Email:
+      title: Email
+      type: string
+      example: john.doe@test.com
+      description: Properly formatted email address
+    AssignmentId:
+      title: AssignmentId
+      type: integer
+      example: 7890
+      readOnly: true
+      description: Unique identifier for delivery assignment
   securitySchemes:
     Authorization:
       name: Authorization
