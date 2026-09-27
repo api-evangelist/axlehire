@@ -223,84 +223,6 @@ paths:
       - Assignment Information
 components:
   schemas:
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-        street2:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        zipcode:
-          type: string
-        what3words:
-          type: string
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-      description: An address is a structured entity that contains address components
-      x-examples:
-        Example 1:
-          street: 1937 Davis Street
-          street2: Suite A
-          city: San Leandro
-          state: CA
-          zipcode: '94577'
-    Parcel:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Jitsu Parcel Identifier
-        description:
-          type: string
-        dimensions:
-          $ref: '#/components/schemas/Dimension'
-        weight:
-          $ref: '#/components/schemas/Weight'
-        category:
-          type: string
-          readOnly: true
-        type:
-          type: string
-          description: Type of parcel
-          example: box
-          readOnly: true
-        status:
-          type: string
-          readOnly: true
-        quantity:
-          type: integer
-          format: int32
-        _created:
-          type: string
-          format: date-time
-          readOnly: true
-        _updated:
-          type: string
-          format: date-time
-          readOnly: true
-        _deleted:
-          type: boolean
-          readOnly: true
-        _etag:
-          type: string
-          readOnly: true
-        uid:
-          type: string
-          readOnly: true
-        shipment_id:
-          type: integer
-        parcel_id:
-          type: string
-          description: Client internal parcel identifier
-          example: abc123
     Shipment:
       type: object
       x-examples:
@@ -597,67 +519,48 @@ components:
         code:
           type: string
           description: Brand code as set in portal
-    Remark:
+    Address:
       type: object
       properties:
-        pickup:
+        street:
           type: string
-        dropoff:
+        street2:
           type: string
-        return:
+        city:
           type: string
-    Assignment:
+        state:
+          type: string
+        zipcode:
+          type: string
+        what3words:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      description: An address is a structured entity that contains address components
+      x-examples:
+        Example 1:
+          street: 1937 Davis Street
+          street2: Suite A
+          city: San Leandro
+          state: CA
+          zipcode: '94577'
+    Weight:
       type: object
-      description: Delivery assignment
+      x-examples:
+        Example 1:
+          value: 1.5
+          unit: lb
+      description: Parcel weight
       properties:
-        id:
-          type: integer
-        driver:
-          $ref: '#/components/schemas/Driver'
-        vehicle:
-          $ref: '#/components/schemas/Vehicle'
-        shipment_ids:
-          type: array
-          items:
-            type: integer
-    Driver:
-      type: object
-      properties:
-        first_name:
+        value:
+          type: number
+          format: double
+        unit:
           type: string
-          example: James
-        last_name:
-          type: string
-          example: Bond
-        phone_number:
-          type: string
-          example: '1234567890'
-          description: US phone number
-        profile_photo:
-          type: string
-        id:
-          type: integer
-    Vehicle:
-      type: object
-      description: Driver vehicle
-      properties:
-        make:
-          type: string
-          example: Aston Martin
-        model:
-          type: string
-          example: DB5
-        color:
-          type: string
-          example: Silver
-        license_plate:
-          type: string
-          example: BND-007
-        license_plate_state:
-          type: string
-          example: CA
-        id:
-          type: integer
     Dimension:
       type: object
       description: Size of parcel typically using height, width, and length
@@ -685,24 +588,6 @@ components:
         depth:
           type: number
           format: double
-    Phone-Number:
-      title: Phone-Number
-      type: string
-      example: '1234567865'
-      description: 10 digit phone number
-    Weight:
-      type: object
-      x-examples:
-        Example 1:
-          value: 1.5
-          unit: lb
-      description: Parcel weight
-      properties:
-        value:
-          type: number
-          format: double
-        unit:
-          type: string
     Customer:
       type: object
       x-examples:
@@ -720,17 +605,132 @@ components:
           $ref: '#/components/schemas/Email'
         phone_number:
           $ref: '#/components/schemas/Phone-Number'
-    Email:
-      title: Email
+    Vehicle:
+      type: object
+      description: Driver vehicle
+      properties:
+        make:
+          type: string
+          example: Aston Martin
+        model:
+          type: string
+          example: DB5
+        color:
+          type: string
+          example: Silver
+        license_plate:
+          type: string
+          example: BND-007
+        license_plate_state:
+          type: string
+          example: CA
+        id:
+          type: integer
+    Phone-Number:
+      title: Phone-Number
       type: string
-      example: john.doe@test.com
-      description: Properly formatted email address
+      example: '1234567865'
+      description: 10 digit phone number
+    Driver:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: James
+        last_name:
+          type: string
+          example: Bond
+        phone_number:
+          type: string
+          example: '1234567890'
+          description: US phone number
+        profile_photo:
+          type: string
+        id:
+          type: integer
     AssignmentId:
       title: AssignmentId
       type: integer
       example: 7890
       readOnly: true
       description: Unique identifier for delivery assignment
+    Assignment:
+      type: object
+      description: Delivery assignment
+      properties:
+        id:
+          type: integer
+        driver:
+          $ref: '#/components/schemas/Driver'
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+        shipment_ids:
+          type: array
+          items:
+            type: integer
+    Parcel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Jitsu Parcel Identifier
+        description:
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/Dimension'
+        weight:
+          $ref: '#/components/schemas/Weight'
+        category:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          description: Type of parcel
+          example: box
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        quantity:
+          type: integer
+          format: int32
+        _created:
+          type: string
+          format: date-time
+          readOnly: true
+        _updated:
+          type: string
+          format: date-time
+          readOnly: true
+        _deleted:
+          type: boolean
+          readOnly: true
+        _etag:
+          type: string
+          readOnly: true
+        uid:
+          type: string
+          readOnly: true
+        shipment_id:
+          type: integer
+        parcel_id:
+          type: string
+          description: Client internal parcel identifier
+          example: abc123
+    Email:
+      title: Email
+      type: string
+      example: john.doe@test.com
+      description: Properly formatted email address
+    Remark:
+      type: object
+      properties:
+        pickup:
+          type: string
+        dropoff:
+          type: string
+        return:
+          type: string
   securitySchemes:
     Authorization:
       name: Authorization

@@ -1456,110 +1456,6 @@ paths:
       - Shipping Information
 components:
   schemas:
-    Dimension:
-      type: object
-      description: Size of parcel typically using height, width, and length
-      x-examples:
-        Example 1:
-          unit: in
-          height: 5.5
-          width: 2
-          length: 3
-          depth: 4.2
-      properties:
-        unit:
-          type: string
-          default: in
-          example: kg
-        height:
-          type: number
-          format: double
-        width:
-          type: number
-          format: double
-        length:
-          type: number
-          format: double
-        depth:
-          type: number
-          format: double
-    NotesRequest:
-      type: object
-      properties:
-        pickup_note:
-          type: string
-        dropoff_note:
-          type: string
-    Price:
-      type: object
-      properties:
-        unit:
-          type: string
-          readOnly: true
-        base:
-          type: number
-          format: double
-          readOnly: true
-        pre_delivery_adjustment:
-          type: number
-          format: double
-          readOnly: true
-        post_delivery_adjustment:
-          type: number
-          format: double
-          readOnly: true
-    Weight:
-      type: object
-      x-examples:
-        Example 1:
-          value: 1.5
-          unit: lb
-      description: Parcel weight
-      properties:
-        value:
-          type: number
-          format: double
-        unit:
-          type: string
-    Customer:
-      type: object
-      x-examples:
-        John Doe:
-          name: John Doe
-          email: john.d@example.com
-          phone_number: 123-456-7890
-      description: A customer represents the essential information we should know about your customer or the recipient.
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        email:
-          $ref: '#/components/schemas/Email'
-        phone_number:
-          $ref: '#/components/schemas/Phone-Number'
-    ShipmentDeliveryInfo:
-      type: object
-      x-examples:
-        Example 1:
-          images:
-          - url: https://samplepod.gojitsu.com/1
-            category: DELIVERY
-            capture_ts: '2024-10-28T18:14:53.000Z'
-          signatures:
-          - url: https://samplepod.gojitsu.com/1
-            category: DELIVERY
-            capture_ts: '2024-10-28T18:14:53.000Z'
-      properties:
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryPod'
-        signatures:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryPod'
-      description: Shipment delivery info
     Address:
       type: object
       properties:
@@ -1589,6 +1485,113 @@ components:
           city: San Leandro
           state: CA
           zipcode: '94577'
+    NotesRequest:
+      type: object
+      properties:
+        pickup_note:
+          type: string
+        dropoff_note:
+          type: string
+    MarkAsShippedRequest:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: string
+        shipment_ids:
+          type: array
+          items:
+            type: integer
+        order_ids:
+          type: array
+          items:
+            type: string
+        tracking_codes:
+          type: array
+          items:
+            type: string
+    DeliveryPod:
+      type: object
+      x-examples:
+        Example 1:
+          url: https://exampleurl.gojitsu.com
+          category: DELIVERY
+          capture_ts: '2024-10-28T18:14:53.000Z'
+      description: Proof of delivery information
+      properties:
+        url:
+          type: string
+          description: Token signed url to access POD
+        category:
+          type: string
+          description: Category of POD - ie "DELIVERY"
+        capture_ts:
+          type: string
+          format: date-time
+          description: UTC timestamp for when POD was captured
+    TimeWindow:
+      required:
+      - dropoff_earliest_ts
+      - dropoff_latest_ts
+      type: object
+      properties:
+        dropoff_earliest_ts:
+          type: string
+          format: date-time
+        dropoff_latest_ts:
+          type: string
+          format: date-time
+    Dimension:
+      type: object
+      description: Size of parcel typically using height, width, and length
+      x-examples:
+        Example 1:
+          unit: in
+          height: 5.5
+          width: 2
+          length: 3
+          depth: 4.2
+      properties:
+        unit:
+          type: string
+          default: in
+          example: kg
+        height:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        length:
+          type: number
+          format: double
+        depth:
+          type: number
+          format: double
+    Customer:
+      type: object
+      x-examples:
+        John Doe:
+          name: John Doe
+          email: john.d@example.com
+          phone_number: 123-456-7890
+      description: A customer represents the essential information we should know about your customer or the recipient.
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        email:
+          $ref: '#/components/schemas/Email'
+        phone_number:
+          $ref: '#/components/schemas/Phone-Number'
+    ShipmentId:
+      title: ShipmentId
+      type: integer
+      example: 123456
+      readOnly: true
+      description: Unique identifier for a Shipment
     Parcel:
       type: object
       properties:
@@ -1638,76 +1641,25 @@ components:
           type: string
           description: Client internal parcel identifier
           example: abc123
-    CancelShipmentRequest:
+    Remark:
       type: object
       properties:
-        reason:
+        pickup:
           type: string
-      description: ''
-    TimeWindow:
-      required:
-      - dropoff_earliest_ts
-      - dropoff_latest_ts
-      type: object
-      properties:
-        dropoff_earliest_ts:
+        dropoff:
           type: string
-          format: date-time
-        dropoff_latest_ts:
+        return:
           type: string
-          format: date-time
-    MarkAsShippedRequest:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties:
-            type: string
-        shipment_ids:
-          type: array
-          items:
-            type: integer
-        order_ids:
-          type: array
-          items:
-            type: string
-        tracking_codes:
-          type: array
-          items:
-            type: string
-    ShipmentId:
-      title: ShipmentId
-      type: integer
-      example: 123456
-      readOnly: true
-      description: Unique identifier for a Shipment
-    NewShipmentResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        tracking_code:
-          type: string
-          example: trackingcode123
-    DeliveryPod:
-      type: object
-      x-examples:
-        Example 1:
-          url: https://exampleurl.gojitsu.com
-          category: DELIVERY
-          capture_ts: '2024-10-28T18:14:53.000Z'
-      description: Proof of delivery information
-      properties:
-        url:
-          type: string
-          description: Token signed url to access POD
-        category:
-          type: string
-          description: Category of POD - ie "DELIVERY"
-        capture_ts:
-          type: string
-          format: date-time
-          description: UTC timestamp for when POD was captured
+    Phone-Number:
+      title: Phone-Number
+      type: string
+      example: '1234567865'
+      description: 10 digit phone number
+    Email:
+      title: Email
+      type: string
+      example: john.doe@test.com
+      description: Properly formatted email address
     Shipment:
       type: object
       x-examples:
@@ -2004,6 +1956,37 @@ components:
         code:
           type: string
           description: Brand code as set in portal
+    Price:
+      type: object
+      properties:
+        unit:
+          type: string
+          readOnly: true
+        base:
+          type: number
+          format: double
+          readOnly: true
+        pre_delivery_adjustment:
+          type: number
+          format: double
+          readOnly: true
+        post_delivery_adjustment:
+          type: number
+          format: double
+          readOnly: true
+    Weight:
+      type: object
+      x-examples:
+        Example 1:
+          value: 1.5
+          unit: lb
+      description: Parcel weight
+      properties:
+        value:
+          type: number
+          format: double
+        unit:
+          type: string
     DropoffInfo:
       type: object
       properties:
@@ -2011,31 +1994,48 @@ components:
           type: string
         dropoff_additional_instruction:
           type: string
+    CancelShipmentRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+      description: ''
     ParcelId:
       title: ParcelId
       type: integer
       description: Unique Jitsu identifier for Parcel
       example: 1234
       readOnly: true
-    Email:
-      title: Email
-      type: string
-      example: john.doe@test.com
-      description: Properly formatted email address
-    Remark:
+    ShipmentDeliveryInfo:
+      type: object
+      x-examples:
+        Example 1:
+          images:
+          - url: https://samplepod.gojitsu.com/1
+            category: DELIVERY
+            capture_ts: '2024-10-28T18:14:53.000Z'
+          signatures:
+          - url: https://samplepod.gojitsu.com/1
+            category: DELIVERY
+            capture_ts: '2024-10-28T18:14:53.000Z'
+      properties:
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryPod'
+        signatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryPod'
+      description: Shipment delivery info
+    NewShipmentResponse:
       type: object
       properties:
-        pickup:
+        id:
+          type: integer
+        tracking_code:
           type: string
-        dropoff:
-          type: string
-        return:
-          type: string
-    Phone-Number:
-      title: Phone-Number
-      type: string
-      example: '1234567865'
-      description: 10 digit phone number
+          example: trackingcode123
   securitySchemes:
     Authorization:
       name: Authorization
