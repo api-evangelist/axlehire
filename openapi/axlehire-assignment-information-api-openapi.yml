@@ -223,6 +223,28 @@ paths:
       - Assignment Information
 components:
   schemas:
+    Remark:
+      type: object
+      properties:
+        pickup:
+          type: string
+        dropoff:
+          type: string
+        return:
+          type: string
+    Weight:
+      type: object
+      x-examples:
+        Example 1:
+          value: 1.5
+          unit: lb
+      description: Parcel weight
+      properties:
+        value:
+          type: number
+          format: double
+        unit:
+          type: string
     Shipment:
       type: object
       x-examples:
@@ -519,6 +541,74 @@ components:
         code:
           type: string
           description: Brand code as set in portal
+    Customer:
+      type: object
+      x-examples:
+        John Doe:
+          name: John Doe
+          email: john.d@example.com
+          phone_number: 123-456-7890
+      description: A customer represents the essential information we should know about your customer or the recipient.
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        email:
+          $ref: '#/components/schemas/Email'
+        phone_number:
+          $ref: '#/components/schemas/Phone-Number'
+    Phone-Number:
+      title: Phone-Number
+      type: string
+      example: '1234567865'
+      description: 10 digit phone number
+    Email:
+      title: Email
+      type: string
+      example: john.doe@test.com
+      description: Properly formatted email address
+    Assignment:
+      type: object
+      description: Delivery assignment
+      properties:
+        id:
+          type: integer
+        driver:
+          $ref: '#/components/schemas/Driver'
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+        shipment_ids:
+          type: array
+          items:
+            type: integer
+    Dimension:
+      type: object
+      description: Size of parcel typically using height, width, and length
+      x-examples:
+        Example 1:
+          unit: in
+          height: 5.5
+          width: 2
+          length: 3
+          depth: 4.2
+      properties:
+        unit:
+          type: string
+          default: in
+          example: kg
+        height:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        length:
+          type: number
+          format: double
+        depth:
+          type: number
+          format: double
     Address:
       type: object
       properties:
@@ -548,126 +638,6 @@ components:
           city: San Leandro
           state: CA
           zipcode: '94577'
-    Weight:
-      type: object
-      x-examples:
-        Example 1:
-          value: 1.5
-          unit: lb
-      description: Parcel weight
-      properties:
-        value:
-          type: number
-          format: double
-        unit:
-          type: string
-    Dimension:
-      type: object
-      description: Size of parcel typically using height, width, and length
-      x-examples:
-        Example 1:
-          unit: in
-          height: 5.5
-          width: 2
-          length: 3
-          depth: 4.2
-      properties:
-        unit:
-          type: string
-          default: in
-          example: kg
-        height:
-          type: number
-          format: double
-        width:
-          type: number
-          format: double
-        length:
-          type: number
-          format: double
-        depth:
-          type: number
-          format: double
-    Customer:
-      type: object
-      x-examples:
-        John Doe:
-          name: John Doe
-          email: john.d@example.com
-          phone_number: 123-456-7890
-      description: A customer represents the essential information we should know about your customer or the recipient.
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        email:
-          $ref: '#/components/schemas/Email'
-        phone_number:
-          $ref: '#/components/schemas/Phone-Number'
-    Vehicle:
-      type: object
-      description: Driver vehicle
-      properties:
-        make:
-          type: string
-          example: Aston Martin
-        model:
-          type: string
-          example: DB5
-        color:
-          type: string
-          example: Silver
-        license_plate:
-          type: string
-          example: BND-007
-        license_plate_state:
-          type: string
-          example: CA
-        id:
-          type: integer
-    Phone-Number:
-      title: Phone-Number
-      type: string
-      example: '1234567865'
-      description: 10 digit phone number
-    Driver:
-      type: object
-      properties:
-        first_name:
-          type: string
-          example: James
-        last_name:
-          type: string
-          example: Bond
-        phone_number:
-          type: string
-          example: '1234567890'
-          description: US phone number
-        profile_photo:
-          type: string
-        id:
-          type: integer
-    AssignmentId:
-      title: AssignmentId
-      type: integer
-      example: 7890
-      readOnly: true
-      description: Unique identifier for delivery assignment
-    Assignment:
-      type: object
-      description: Delivery assignment
-      properties:
-        id:
-          type: integer
-        driver:
-          $ref: '#/components/schemas/Driver'
-        vehicle:
-          $ref: '#/components/schemas/Vehicle'
-        shipment_ids:
-          type: array
-          items:
-            type: integer
     Parcel:
       type: object
       properties:
@@ -717,20 +687,50 @@ components:
           type: string
           description: Client internal parcel identifier
           example: abc123
-    Email:
-      title: Email
-      type: string
-      example: john.doe@test.com
-      description: Properly formatted email address
-    Remark:
+    AssignmentId:
+      title: AssignmentId
+      type: integer
+      example: 7890
+      readOnly: true
+      description: Unique identifier for delivery assignment
+    Driver:
       type: object
       properties:
-        pickup:
+        first_name:
           type: string
-        dropoff:
+          example: James
+        last_name:
           type: string
-        return:
+          example: Bond
+        phone_number:
           type: string
+          example: '1234567890'
+          description: US phone number
+        profile_photo:
+          type: string
+        id:
+          type: integer
+    Vehicle:
+      type: object
+      description: Driver vehicle
+      properties:
+        make:
+          type: string
+          example: Aston Martin
+        model:
+          type: string
+          example: DB5
+        color:
+          type: string
+          example: Silver
+        license_plate:
+          type: string
+          example: BND-007
+        license_plate_state:
+          type: string
+          example: CA
+        id:
+          type: integer
   securitySchemes:
     Authorization:
       name: Authorization
