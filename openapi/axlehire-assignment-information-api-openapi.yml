@@ -223,15 +223,89 @@ paths:
       - Assignment Information
 components:
   schemas:
-    Remark:
+    Customer:
+      type: object
+      x-examples:
+        John Doe:
+          name: John Doe
+          email: john.d@example.com
+          phone_number: 123-456-7890
+      description: A customer represents the essential information we should know about your customer or the recipient.
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        email:
+          $ref: '#/components/schemas/Email'
+        phone_number:
+          $ref: '#/components/schemas/Phone-Number'
+    Parcel:
       type: object
       properties:
-        pickup:
+        id:
+          type: integer
+          description: Jitsu Parcel Identifier
+        description:
           type: string
-        dropoff:
+        dimensions:
+          $ref: '#/components/schemas/Dimension'
+        weight:
+          $ref: '#/components/schemas/Weight'
+        category:
           type: string
-        return:
+          readOnly: true
+        type:
           type: string
+          description: Type of parcel
+          example: box
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        quantity:
+          type: integer
+          format: int32
+        _created:
+          type: string
+          format: date-time
+          readOnly: true
+        _updated:
+          type: string
+          format: date-time
+          readOnly: true
+        _deleted:
+          type: boolean
+          readOnly: true
+        _etag:
+          type: string
+          readOnly: true
+        uid:
+          type: string
+          readOnly: true
+        shipment_id:
+          type: integer
+        parcel_id:
+          type: string
+          description: Client internal parcel identifier
+          example: abc123
+    Driver:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: James
+        last_name:
+          type: string
+          example: Bond
+        phone_number:
+          type: string
+          example: '1234567890'
+          description: US phone number
+        profile_photo:
+          type: string
+        id:
+          type: integer
     Weight:
       type: object
       x-examples:
@@ -245,6 +319,46 @@ components:
           format: double
         unit:
           type: string
+    AssignmentId:
+      title: AssignmentId
+      type: integer
+      example: 7890
+      readOnly: true
+      description: Unique identifier for delivery assignment
+    Phone-Number:
+      title: Phone-Number
+      type: string
+      example: '1234567865'
+      description: 10 digit phone number
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        street2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipcode:
+          type: string
+        what3words:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      description: An address is a structured entity that contains address components
+      x-examples:
+        Example 1:
+          street: 1937 Davis Street
+          street2: Suite A
+          city: San Leandro
+          state: CA
+          zipcode: '94577'
     Shipment:
       type: object
       x-examples:
@@ -541,33 +655,41 @@ components:
         code:
           type: string
           description: Brand code as set in portal
-    Customer:
-      type: object
-      x-examples:
-        John Doe:
-          name: John Doe
-          email: john.d@example.com
-          phone_number: 123-456-7890
-      description: A customer represents the essential information we should know about your customer or the recipient.
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        email:
-          $ref: '#/components/schemas/Email'
-        phone_number:
-          $ref: '#/components/schemas/Phone-Number'
-    Phone-Number:
-      title: Phone-Number
-      type: string
-      example: '1234567865'
-      description: 10 digit phone number
     Email:
       title: Email
       type: string
       example: john.doe@test.com
       description: Properly formatted email address
+    Vehicle:
+      type: object
+      description: Driver vehicle
+      properties:
+        make:
+          type: string
+          example: Aston Martin
+        model:
+          type: string
+          example: DB5
+        color:
+          type: string
+          example: Silver
+        license_plate:
+          type: string
+          example: BND-007
+        license_plate_state:
+          type: string
+          example: CA
+        id:
+          type: integer
+    Remark:
+      type: object
+      properties:
+        pickup:
+          type: string
+        dropoff:
+          type: string
+        return:
+          type: string
     Assignment:
       type: object
       description: Delivery assignment
@@ -609,128 +731,6 @@ components:
         depth:
           type: number
           format: double
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-        street2:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        zipcode:
-          type: string
-        what3words:
-          type: string
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-      description: An address is a structured entity that contains address components
-      x-examples:
-        Example 1:
-          street: 1937 Davis Street
-          street2: Suite A
-          city: San Leandro
-          state: CA
-          zipcode: '94577'
-    Parcel:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Jitsu Parcel Identifier
-        description:
-          type: string
-        dimensions:
-          $ref: '#/components/schemas/Dimension'
-        weight:
-          $ref: '#/components/schemas/Weight'
-        category:
-          type: string
-          readOnly: true
-        type:
-          type: string
-          description: Type of parcel
-          example: box
-          readOnly: true
-        status:
-          type: string
-          readOnly: true
-        quantity:
-          type: integer
-          format: int32
-        _created:
-          type: string
-          format: date-time
-          readOnly: true
-        _updated:
-          type: string
-          format: date-time
-          readOnly: true
-        _deleted:
-          type: boolean
-          readOnly: true
-        _etag:
-          type: string
-          readOnly: true
-        uid:
-          type: string
-          readOnly: true
-        shipment_id:
-          type: integer
-        parcel_id:
-          type: string
-          description: Client internal parcel identifier
-          example: abc123
-    AssignmentId:
-      title: AssignmentId
-      type: integer
-      example: 7890
-      readOnly: true
-      description: Unique identifier for delivery assignment
-    Driver:
-      type: object
-      properties:
-        first_name:
-          type: string
-          example: James
-        last_name:
-          type: string
-          example: Bond
-        phone_number:
-          type: string
-          example: '1234567890'
-          description: US phone number
-        profile_photo:
-          type: string
-        id:
-          type: integer
-    Vehicle:
-      type: object
-      description: Driver vehicle
-      properties:
-        make:
-          type: string
-          example: Aston Martin
-        model:
-          type: string
-          example: DB5
-        color:
-          type: string
-          example: Silver
-        license_plate:
-          type: string
-          example: BND-007
-        license_plate_state:
-          type: string
-          example: CA
-        id:
-          type: integer
   securitySchemes:
     Authorization:
       name: Authorization

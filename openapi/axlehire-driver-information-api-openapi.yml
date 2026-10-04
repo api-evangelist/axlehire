@@ -55,12 +55,6 @@ paths:
       - Driver Information
 components:
   schemas:
-    AssignmentId:
-      title: AssignmentId
-      type: integer
-      example: 7890
-      readOnly: true
-      description: Unique identifier for delivery assignment
     Tip:
       type: object
       properties:
@@ -110,6 +104,12 @@ components:
           type: number
           format: double
       description: ''
+    AssignmentId:
+      title: AssignmentId
+      type: integer
+      example: 7890
+      readOnly: true
+      description: Unique identifier for delivery assignment
   securitySchemes:
     Authorization:
       name: Authorization
