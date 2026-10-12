@@ -18,9 +18,9 @@
     value: axlehire
     property: components.schemas.CarriersEnum
     detected_by: detect-carrier-edges.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
     spec_url: https://docs.goshippo.com/spec/shippoapi/public-api.yaml
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: axlehire-17track
   label: 17track
@@ -31,5 +31,5 @@
   evidence: https://res.17track.net/asset/carrier/info/apicarrier.all.json
   source: edge
   relationship: carrier-coverage
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
