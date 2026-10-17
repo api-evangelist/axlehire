@@ -1456,25 +1456,24 @@ paths:
       - Shipping Information
 components:
   schemas:
-    CancelShipmentRequest:
+    Price:
       type: object
       properties:
-        reason:
-          type: string
-      description: ''
-    Weight:
-      type: object
-      x-examples:
-        Example 1:
-          value: 1.5
-          unit: lb
-      description: Parcel weight
-      properties:
-        value:
-          type: number
-          format: double
         unit:
           type: string
+          readOnly: true
+        base:
+          type: number
+          format: double
+          readOnly: true
+        pre_delivery_adjustment:
+          type: number
+          format: double
+          readOnly: true
+        post_delivery_adjustment:
+          type: number
+          format: double
+          readOnly: true
     DeliveryPod:
       type: object
       x-examples:
@@ -1494,94 +1493,6 @@ components:
           type: string
           format: date-time
           description: UTC timestamp for when POD was captured
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-        street2:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        zipcode:
-          type: string
-        what3words:
-          type: string
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-      description: An address is a structured entity that contains address components
-      x-examples:
-        Example 1:
-          street: 1937 Davis Street
-          street2: Suite A
-          city: San Leandro
-          state: CA
-          zipcode: '94577'
-    Email:
-      title: Email
-      type: string
-      example: john.doe@test.com
-      description: Properly formatted email address
-    ShipmentDeliveryInfo:
-      type: object
-      x-examples:
-        Example 1:
-          images:
-          - url: https://samplepod.gojitsu.com/1
-            category: DELIVERY
-            capture_ts: '2024-10-28T18:14:53.000Z'
-          signatures:
-          - url: https://samplepod.gojitsu.com/1
-            category: DELIVERY
-            capture_ts: '2024-10-28T18:14:53.000Z'
-      properties:
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryPod'
-        signatures:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryPod'
-      description: Shipment delivery info
-    NewShipmentResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        tracking_code:
-          type: string
-          example: trackingcode123
-    Price:
-      type: object
-      properties:
-        unit:
-          type: string
-          readOnly: true
-        base:
-          type: number
-          format: double
-          readOnly: true
-        pre_delivery_adjustment:
-          type: number
-          format: double
-          readOnly: true
-        post_delivery_adjustment:
-          type: number
-          format: double
-          readOnly: true
-    ShipmentId:
-      title: ShipmentId
-      type: integer
-      example: 123456
-      readOnly: true
-      description: Unique identifier for a Shipment
     Dimension:
       type: object
       description: Size of parcel typically using height, width, and length
@@ -1609,6 +1520,127 @@ components:
         depth:
           type: number
           format: double
+    CancelShipmentRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+      description: ''
+    Weight:
+      type: object
+      x-examples:
+        Example 1:
+          value: 1.5
+          unit: lb
+      description: Parcel weight
+      properties:
+        value:
+          type: number
+          format: double
+        unit:
+          type: string
+    NotesRequest:
+      type: object
+      properties:
+        pickup_note:
+          type: string
+        dropoff_note:
+          type: string
+    MarkAsShippedRequest:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: string
+        shipment_ids:
+          type: array
+          items:
+            type: integer
+        order_ids:
+          type: array
+          items:
+            type: string
+        tracking_codes:
+          type: array
+          items:
+            type: string
+    ShipmentId:
+      title: ShipmentId
+      type: integer
+      example: 123456
+      readOnly: true
+      description: Unique identifier for a Shipment
+    DropoffInfo:
+      type: object
+      properties:
+        dropoff_access_code:
+          type: string
+        dropoff_additional_instruction:
+          type: string
+    Parcel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Jitsu Parcel Identifier
+        description:
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/Dimension'
+        weight:
+          $ref: '#/components/schemas/Weight'
+        category:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          description: Type of parcel
+          example: box
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        quantity:
+          type: integer
+          format: int32
+        _created:
+          type: string
+          format: date-time
+          readOnly: true
+        _updated:
+          type: string
+          format: date-time
+          readOnly: true
+        _deleted:
+          type: boolean
+          readOnly: true
+        _etag:
+          type: string
+          readOnly: true
+        uid:
+          type: string
+          readOnly: true
+        shipment_id:
+          type: integer
+        parcel_id:
+          type: string
+          description: Client internal parcel identifier
+          example: abc123
+    Remark:
+      type: object
+      properties:
+        pickup:
+          type: string
+        dropoff:
+          type: string
+        return:
+          type: string
+    Phone-Number:
+      title: Phone-Number
+      type: string
+      example: '1234567865'
+      description: 10 digit phone number
     Customer:
       type: object
       x-examples:
@@ -1626,18 +1658,6 @@ components:
           $ref: '#/components/schemas/Email'
         phone_number:
           $ref: '#/components/schemas/Phone-Number'
-    Phone-Number:
-      title: Phone-Number
-      type: string
-      example: '1234567865'
-      description: 10 digit phone number
-    NotesRequest:
-      type: object
-      properties:
-        pickup_note:
-          type: string
-        dropoff_note:
-          type: string
     Shipment:
       type: object
       x-examples:
@@ -1934,28 +1954,68 @@ components:
         code:
           type: string
           description: Brand code as set in portal
-    DropoffInfo:
-      type: object
-      properties:
-        dropoff_access_code:
-          type: string
-        dropoff_additional_instruction:
-          type: string
-    Remark:
-      type: object
-      properties:
-        pickup:
-          type: string
-        dropoff:
-          type: string
-        return:
-          type: string
+    Email:
+      title: Email
+      type: string
+      example: john.doe@test.com
+      description: Properly formatted email address
     ParcelId:
       title: ParcelId
       type: integer
       description: Unique Jitsu identifier for Parcel
       example: 1234
       readOnly: true
+    ShipmentDeliveryInfo:
+      type: object
+      x-examples:
+        Example 1:
+          images:
+          - url: https://samplepod.gojitsu.com/1
+            category: DELIVERY
+            capture_ts: '2024-10-28T18:14:53.000Z'
+          signatures:
+          - url: https://samplepod.gojitsu.com/1
+            category: DELIVERY
+            capture_ts: '2024-10-28T18:14:53.000Z'
+      properties:
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryPod'
+        signatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryPod'
+      description: Shipment delivery info
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        street2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipcode:
+          type: string
+        what3words:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      description: An address is a structured entity that contains address components
+      x-examples:
+        Example 1:
+          street: 1937 Davis Street
+          street2: Suite A
+          city: San Leandro
+          state: CA
+          zipcode: '94577'
     TimeWindow:
       required:
       - dropoff_earliest_ts
@@ -1968,74 +2028,14 @@ components:
         dropoff_latest_ts:
           type: string
           format: date-time
-    MarkAsShippedRequest:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties:
-            type: string
-        shipment_ids:
-          type: array
-          items:
-            type: integer
-        order_ids:
-          type: array
-          items:
-            type: string
-        tracking_codes:
-          type: array
-          items:
-            type: string
-    Parcel:
+    NewShipmentResponse:
       type: object
       properties:
         id:
           type: integer
-          description: Jitsu Parcel Identifier
-        description:
+        tracking_code:
           type: string
-        dimensions:
-          $ref: '#/components/schemas/Dimension'
-        weight:
-          $ref: '#/components/schemas/Weight'
-        category:
-          type: string
-          readOnly: true
-        type:
-          type: string
-          description: Type of parcel
-          example: box
-          readOnly: true
-        status:
-          type: string
-          readOnly: true
-        quantity:
-          type: integer
-          format: int32
-        _created:
-          type: string
-          format: date-time
-          readOnly: true
-        _updated:
-          type: string
-          format: date-time
-          readOnly: true
-        _deleted:
-          type: boolean
-          readOnly: true
-        _etag:
-          type: string
-          readOnly: true
-        uid:
-          type: string
-          readOnly: true
-        shipment_id:
-          type: integer
-        parcel_id:
-          type: string
-          description: Client internal parcel identifier
-          example: abc123
+          example: trackingcode123
   securitySchemes:
     Authorization:
       name: Authorization

@@ -324,6 +324,23 @@ paths:
       - Tracking Information
 components:
   schemas:
+    Geolocation:
+      title: Geolocation
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: float
+          example: 33.90218024032627
+        longitude:
+          type: number
+          format: float
+          example: -118.04558467543646
+        altitude:
+          type: number
+          format: float
+          example: 26.378598849334196
+      description: Coordinate based location
     TrackingEvent:
       title: Tracking Event
       type: object
@@ -355,23 +372,6 @@ components:
           type: string
           description: Event category
           example: OUTBOUND
-    Geolocation:
-      title: Geolocation
-      type: object
-      properties:
-        latitude:
-          type: number
-          format: float
-          example: 33.90218024032627
-        longitude:
-          type: number
-          format: float
-          example: -118.04558467543646
-        altitude:
-          type: number
-          format: float
-          example: 26.378598849334196
-      description: Coordinate based location
   securitySchemes:
     Authorization:
       name: Authorization
