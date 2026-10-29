@@ -1,4 +1,4 @@
-# AxleHire
+# AxleHire (Jitsu)
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,5 +64,137 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-AxleHire is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+AxleHire is a US last-mile delivery carrier founded in 2015 that rebranded as Jitsu in April 2024 and now operates at gojitsu.com. It runs an asset-light, gig-driver network with a proprietary routing and tracking platform serving e-commerce, meal-kit and subscription-box shippers across 23 of the 25 largest US metros, seven days a week. The Jitsu REST API (v3) lets shippers submit shipments, retrieve ZPL/PNG/PDF labels, manage parcels, cancel and re-window deliveries, pull rating estimates and proof-of-delivery, and read the full tracking event history. A documented webhook surface pushes ~33 lifecycle events — planning, inbound scan, outbound pickup/dropoff, proof-of-delivery and exceptions — to a registered endpoint. Jitsu publishes an OpenAPI 3.0.1 contract, nine first-party SDKs, a staging environment with a lifecycle simulation API, and a public status page.
+
+**Areas:** Company · Logistics · Last Mile Delivery · Shipping · Parcel · Transportation · Supply Chain · E-Commerce · Tracking · Webhook
+
+## AxleHire (Jitsu) on APIs.io
+
+Everything profiled for AxleHire (Jitsu) is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/axlehire/](https://apis.io/providers/axlehire/)** — or go straight to one of the APIs or properties below.
+
+### APIs (5)
+
+- [AxleHire (Jitsu) Assignment Information API](https://apis.io/apis/axlehire/axlehire-assignment-information-api/) — Assignment specific calls
+- [AxleHire (Jitsu) Driver Information API](https://apis.io/apis/axlehire/axlehire-driver-information-api/) — Driver specific calls
+- [AxleHire (Jitsu) Partner Information API](https://apis.io/apis/axlehire/axlehire-partner-information-api/) — The Partner Information API from AxleHire (Jitsu) — 1 operation(s) for partner information.
+- [AxleHire (Jitsu) Shipping Information API](https://apis.io/apis/axlehire/axlehire-shipping-information-api/) — Shipment specific calls
+- [AxleHire (Jitsu) Tracking Information API](https://apis.io/apis/axlehire/axlehire-tracking-information-api/) — Tracking specific calls
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Axlehire Webhooks](https://apis.io/asyncapis/axlehire/axlehire-webhooks/)
+
+#### Examples (4)
+
+Example requests and responses.
+
+- [Axlehire Retrieve Shipment Example](https://apis.io/examples/axlehire/axlehire-retrieve-shipment-example/)
+- [Axlehire Shipment Label Example](https://apis.io/examples/axlehire/axlehire-shipment-label-example/)
+- [Axlehire Submit Shipment Example](https://apis.io/examples/axlehire/axlehire-submit-shipment-example/)
+- [Axlehire Tracking Events Example](https://apis.io/examples/axlehire/axlehire-tracking-events-example/)
+
+#### Collections (5)
+
+Postman and Open Collection request collections.
+
+- [Jitsu REST Assignment Information API](https://apis.io/collections/axlehire/open-axlehire-assignment-information-api/)
+- [Jitsu REST Driver Information API](https://apis.io/collections/axlehire/open-axlehire-driver-information-api/)
+- [Jitsu REST Partner Information API](https://apis.io/collections/axlehire/open-axlehire-partner-information-api/)
+- [Jitsu REST Shipping Information API](https://apis.io/collections/axlehire/open-axlehire-shipping-information-api/)
+- [Jitsu REST Tracking Information API](https://apis.io/collections/axlehire/open-axlehire-tracking-information-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Axlehire Jitsu Rest Api Overlay](https://apis.io/overlays/axlehire/axlehire-jitsu-rest-api-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Axlehire Authentication](https://apis.io/security/axlehire/axlehire-authentication/)
+- [Axlehire Domain Security](https://apis.io/security/axlehire/axlehire-domain-security/)
+- [Axlehire Trust Center](https://apis.io/security/axlehire/axlehire-trust-center/)
+- [Axlehire Vulnerability Disclosure](https://apis.io/security/axlehire/axlehire-vulnerability-disclosure/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Axlehire Rate Limits](https://apis.io/rate-limits/axlehire/axlehire-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://gojitsu.com/)
+- [Documentation](https://docs.gojitsu.com/)
+- [Getting started](https://docs.gojitsu.com/#/docs/QuickStart.md)
+- [API reference](https://docs.gojitsu.com/#/openapi.yaml)
+- [Support](https://gojitsu.com/support)
+- [Blog](https://gojitsu.com/news-insights)
+- [Terms of service](https://gojitsu.com/terms)
+- [Privacy policy](https://gojitsu.com/privacy)
+- [Status](https://status.gojitsu.com/)
+
+## API Evangelist rating
+
+**Kin Score 49.2** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 60.9 |
+| Contract governance | 18.2 |
+| Operational transparency | 55.3 |
+| Developer ergonomics | 35.1 |
+| Access clarity | 43.4 |
+
+**Agent readiness 33.1** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 35.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/axlehire/](https://apis.io/providers/axlehire/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for AxleHire (Jitsu): the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/axlehire/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
